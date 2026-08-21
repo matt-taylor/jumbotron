@@ -1,0 +1,224 @@
+{
+  "count": 2,
+  "pageIndex": 1,
+  "pageSize": 25,
+  "pageCount": 1,
+  "items": [
+    {
+      "provider": {
+        "$ref": "http://sports.core.api.espn.com/v2/sports/soccer/leagues/eng.1/providers/100?lang=en&region=us",
+        "id": "100",
+        "name": "DraftKings",
+        "priority": 1
+      },
+      "details": "ARS -600",
+      "spread": -2.5,
+      "overUnder": 2.5,
+      "overOdds": -180.0,
+      "underOdds": 140.0,
+      "drawOdds": {
+        "moneyLine": 650.0
+      },
+      "homeTeamOdds": {
+        "favorite": true,
+        "underdog": false,
+        "moneyLine": -600,
+        "spreadOdds": 130.0,
+        "open": {
+          "favorite": true,
+          "pointSpread": {
+            "alternateDisplayValue": "-2.5",
+            "american": "-2.5"
+          },
+          "spread": {
+            "value": 2.2,
+            "displayValue": "6/5",
+            "alternateDisplayValue": "+120",
+            "decimal": 2.2,
+            "fraction": "6/5",
+            "american": "+120"
+          },
+          "moneyLine": {
+            "value": 1.13,
+            "displayValue": "2/15",
+            "alternateDisplayValue": "-750",
+            "decimal": 1.13,
+            "fraction": "2/15",
+            "american": "-750"
+          }
+        },
+        "current": {
+          "pointSpread": {
+            "alternateDisplayValue": "-2.5",
+            "american": "-2.5"
+          },
+          "spread": {
+            "value": 2.3,
+            "displayValue": "13/10",
+            "alternateDisplayValue": "+130",
+            "decimal": 2.3,
+            "fraction": "13/10",
+            "american": "+130"
+          },
+          "moneyLine": {
+            "value": 1.16,
+            "displayValue": "1/6",
+            "alternateDisplayValue": "-600",
+            "decimal": 1.16,
+            "fraction": "1/6",
+            "american": "-600"
+          }
+        },
+        "team": {
+          "$ref": "http://sports.core.api.espn.com/v2/sports/soccer/leagues/eng.1/seasons/2026/teams/359?lang=en&region=us"
+        }
+      },
+      "awayTeamOdds": {
+        "favorite": false,
+        "underdog": true,
+        "moneyLine": 1400,
+        "spreadOdds": -190.0,
+        "open": {
+          "favorite": false,
+          "pointSpread": {
+            "alternateDisplayValue": "+2.5",
+            "american": "+2.5"
+          },
+          "spread": {
+            "value": 1.54,
+            "displayValue": "20/37",
+            "alternateDisplayValue": "-185",
+            "decimal": 1.54,
+            "fraction": "20/37",
+            "american": "-185"
+          },
+          "moneyLine": {
+            "value": 16.0,
+            "displayValue": "15/1",
+            "alternateDisplayValue": "+1500",
+            "decimal": 16.0,
+            "fraction": "15/1",
+            "american": "+1500"
+          }
+        },
+        "current": {
+          "pointSpread": {
+            "alternateDisplayValue": "+2.5",
+            "american": "+2.5"
+          },
+          "spread": {
+            "value": 1.52,
+            "displayValue": "10/19",
+            "alternateDisplayValue": "-190",
+            "decimal": 1.52,
+            "fraction": "10/19",
+            "american": "-190"
+          },
+          "moneyLine": {
+            "value": 15.0,
+            "displayValue": "14/1",
+            "alternateDisplayValue": "+1400",
+            "decimal": 15.0,
+            "fraction": "14/1",
+            "american": "+1400"
+          }
+        },
+        "team": {
+          "$ref": "http://sports.core.api.espn.com/v2/sports/soccer/leagues/eng.1/seasons/2026/teams/388?lang=en&region=us"
+        }
+      },
+      "open": {
+        "over": {
+          "value": 1.52,
+          "displayValue": "10/19",
+          "alternateDisplayValue": "-190",
+          "decimal": 1.52,
+          "fraction": "10/19",
+          "american": "-190"
+        },
+        "under": {
+          "value": 2.4,
+          "displayValue": "7/5",
+          "alternateDisplayValue": "+140",
+          "decimal": 2.4,
+          "fraction": "7/5",
+          "american": "+140"
+        },
+        "total": {
+          "alternateDisplayValue": "2.5",
+          "american": "2.5"
+        },
+        "draw": {
+          "value": 8.0,
+          "displayValue": "7/1",
+          "alternateDisplayValue": "+700",
+          "decimal": 8.0,
+          "fraction": "7/1",
+          "american": "+700"
+        }
+      },
+      "current": {
+        "over": {
+          "value": 1.55,
+          "displayValue": "5/9",
+          "alternateDisplayValue": "-180",
+          "decimal": 1.55,
+          "fraction": "5/9",
+          "american": "-180"
+        },
+        "under": {
+          "value": 2.4,
+          "displayValue": "7/5",
+          "alternateDisplayValue": "+140",
+          "decimal": 2.4,
+          "fraction": "7/5",
+          "american": "+140"
+        },
+        "total": {
+          "alternateDisplayValue": "2.5",
+          "american": "2.5"
+        },
+        "draw": {
+          "value": 7.5,
+          "displayValue": "13/2",
+          "alternateDisplayValue": "+650",
+          "decimal": 7.5,
+          "fraction": "13/2",
+          "american": "+650"
+        }
+      }
+    },
+    {
+      "provider": {
+        "id": "2000",
+        "name": "Bet 365",
+        "priority": 0
+      },
+      "drawOdds": {
+        "summary": "13/2",
+        "value": 7.5,
+        "handicap": 0.0
+      },
+      "homeTeamOdds": {
+        "team": {
+          "$ref": "http://sports.core.api.espn.com/v2/sports/soccer/leagues/eng.1/seasons/2026/teams/359?lang=en&region=us"
+        },
+        "odds": {
+          "summary": "1/6",
+          "value": 1.167,
+          "handicap": 0.0
+        }
+      },
+      "awayTeamOdds": {
+        "team": {
+          "$ref": "http://sports.core.api.espn.com/v2/sports/soccer/leagues/eng.1/seasons/2026/teams/388?lang=en&region=us"
+        },
+        "odds": {
+          "summary": "12/1",
+          "value": 13.0,
+          "handicap": 0.0
+        }
+      }
+    }
+  ]
+}

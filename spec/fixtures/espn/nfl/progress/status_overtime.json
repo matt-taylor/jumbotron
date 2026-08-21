@@ -1,0 +1,14 @@
+{
+  "clock": 432,
+  "displayClock": "7:12",
+  "period": 5,
+  "type": {
+    "id": "2",
+    "name": "STATUS_IN_PROGRESS",
+    "state": "in",
+    "completed": false,
+    "description": "In Progress",
+    "detail": "7:12 - OT",
+    "shortDetail": "7:12 - OT"
+  }
+}

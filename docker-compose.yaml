@@ -1,0 +1,55 @@
+volumes:
+  bundle:
+    driver: local
+  mysql:
+    driver: local
+
+x-common-environment: &common-environment
+  RAILS_ENV: "development"
+  MYSQL_HOST: "mysql"
+  MYSQL_USER: "root"
+  MYSQL_PORT: "3306"
+  MYSQL_PASSWORD: "root"
+  BUNDLE_PATH: "/bundle"
+  BUNDLE_JOBS: "2"
+  BUNDLE_RETRY: "3"
+  RAILS_MAX_THREADS: "1"
+  REDIS_URL: "redis://redis"
+  BUNDLER_RAILS_VERSION: "~> 8"
+
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_HOST=mysql
+    ports:
+      - "3311:3306"
+    expose:
+      - "3311"
+    volumes:
+      - mysql:/var/lib/mysql
+  redis:
+    image: redis
+    expose:
+      - 6379
+  engine:
+    build:
+      args:
+        BUNDLE_WITHOUT: "darwin"
+        RAILS_ENV: development
+      target: base
+      context: .
+    command: sleep infinity
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/engine
+      - bundle:/bundle
+    environment:
+      <<: *common-environment
+    ports:
+      - "7778:7778"
+    links:
+      - mysql
+      - redis

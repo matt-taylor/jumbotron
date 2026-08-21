@@ -1,0 +1,26 @@
+# ./Dockerfile
+FROM ruby:4.0.1 as base
+
+ENV RAILS_LOG_TO_STDOUT 1
+ENV RAILS_SERVE_STATIC_FILES 1
+ENV EXECJS_RUNTIME Node
+
+ENV APP_HOME /engine
+
+WORKDIR $APP_HOME
+RUN apt-get update -qq
+RUN apt-get install -y --no-install-recommends \
+  build-essential \
+  dumb-init \
+  git \
+  openssh-client \
+  unzip \
+  zlib1g-dev \
+  default-mysql-client \
+  redis-tools
+
+ARG BUNDLER_VERSION=4.0.4
+RUN gem install bundler -v "${BUNDLER_VERSION}"
+RUN bundle config set force_ruby_platform true
+
+COPY . $APP_HOME

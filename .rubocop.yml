@@ -1,0 +1,167 @@
+plugins:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.4
+  SuggestExtensions: false
+  Exclude:
+    - tmp/**/*
+    - log/**/*
+    - vendor/**/*
+    - coverage/**/*
+    - rails_app/**/*
+    - script/**/*
+
+Style/Documentation:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+    - "*.gemspec"
+    - app/services/jumbotron/services/canonical/**/*
+
+RSpec/DescribeClass:
+  Exclude:
+    - spec/architecture/**/*
+    - spec/adapters/jumbotron/adapters/espn/nfl_transformers_spec.rb
+
+RSpec/DescribeMethod:
+  Exclude:
+    - spec/architecture/**/*
+    - spec/adapters/jumbotron/adapters/espn/nfl_synchronization_policies_spec.rb
+
+
+RSpec/SpecFilePathFormat:
+  Exclude:
+    - spec/architecture/**/*
+
+RSpec/ExampleLength:
+  Exclude:
+    - spec/architecture/**/*
+    - spec/clients/**/*
+    - spec/adapters/**/*
+    - spec/providers/**/*
+    - spec/services/**/*
+    - spec/workflows/**/*
+    - spec/jobs/**/*
+    - spec/boot/**/*
+    - spec/synchronization/**/*
+    - spec/scheduling/**/*
+    - spec/deserializers/**/*
+    - spec/serializers/**/*
+    - spec/models/jumbotron/canonical/**/*
+    - spec/models/jumbotron/schedule_group_spec.rb
+
+RSpec/MultipleExpectations:
+  Exclude:
+    - spec/architecture/**/*
+    - spec/clients/**/*
+    - spec/adapters/**/*
+    - spec/providers/**/*
+    - spec/services/**/*
+    - spec/workflows/**/*
+    - spec/jobs/**/*
+    - spec/boot/**/*
+    - spec/synchronization/**/*
+    - spec/scheduling/**/*
+    - spec/deserializers/**/*
+    - spec/serializers/**/*
+    - spec/models/jumbotron/canonical/**/*
+    - spec/models/jumbotron/schedule_group_spec.rb
+
+RSpec/MessageSpies:
+  Exclude:
+    - spec/adapters/**/*
+    - spec/providers/**/*
+    - spec/workflows/**/*
+    - spec/jobs/**/*
+    - spec/boot/**/*
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 12
+
+# testing.mdc requires context → before → let → subject → it
+RSpec/LeadingSubject:
+  Enabled: false
+
+# Database-constraint proofs must bypass validations to hit FKs/unique indexes
+Rails/SkipsModelValidations:
+  Exclude:
+    - spec/models/jumbotron/league_spec.rb
+    - spec/models/jumbotron/season_spec.rb
+    - spec/models/jumbotron/season_phase_spec.rb
+    - spec/models/jumbotron/provider_identity_spec.rb
+    - spec/models/jumbotron/game_spec.rb
+    - spec/models/jumbotron/game_participant_spec.rb
+
+# Typed ESPN JSON mapping / canonical sync is intentionally branchy field construction
+Metrics/MethodLength:
+  Exclude:
+    - app/deserializers/**/*
+    - app/adapters/jumbotron/adapters/espn/**/*
+    - app/adapters/jumbotron/adapters/base.rb
+    - app/adapters/jumbotron/adapters/registry.rb
+    - app/services/jumbotron/services/adapters/**/*
+    - app/services/jumbotron/services/canonical/**/*
+    - app/services/jumbotron/services/public/**/*
+    - app/workflows/jumbotron/workflows/**/*
+    - app/synchronization/**/*
+    - app/scheduling/**/*
+    - app/providers/jumbotron/providers/espn/**/*
+    - db/migrate/**/*
+    - spec/architecture/**/*
+    - spec/services/**/*
+    - spec/workflows/**/*
+    - spec/clients/**/*
+
+Metrics/AbcSize:
+  Exclude:
+    - app/deserializers/**/*
+    - app/adapters/jumbotron/adapters/espn/**/*
+    - app/adapters/jumbotron/adapters/base.rb
+    - app/services/jumbotron/services/adapters/**/*
+    - app/services/jumbotron/services/canonical/**/*
+    - app/services/jumbotron/services/public/**/*
+    - app/workflows/jumbotron/workflows/**/*
+    - app/synchronization/**/*
+    - app/scheduling/**/*
+    - app/providers/jumbotron/providers/espn/**/*
+    - db/migrate/**/*
+    - spec/architecture/**/*
+    - spec/clients/**/*
+    - spec/services/**/*
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - app/deserializers/**/*
+    - app/adapters/jumbotron/adapters/espn/**/*
+    - app/services/jumbotron/services/canonical/**/*
+    - app/services/jumbotron/services/public/**/*
+    - app/workflows/jumbotron/workflows/**/*
+    - app/scheduling/**/*
+    - app/providers/jumbotron/providers/espn/**/*
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - app/deserializers/**/*
+    - app/adapters/jumbotron/adapters/espn/**/*
+    - app/services/jumbotron/services/canonical/**/*
+    - app/services/jumbotron/services/public/**/*
+    - app/workflows/jumbotron/workflows/**/*
+    - app/scheduling/**/*
+    - app/providers/jumbotron/providers/espn/**/*
+
+Metrics/ClassLength:
+  Exclude:
+    - app/adapters/jumbotron/adapters/espn/**/*
+    - app/deserializers/**/*
+    - app/services/jumbotron/services/canonical/**/*
+    - app/services/jumbotron/services/public/**/*
+    - app/workflows/jumbotron/workflows/**/*
+    - app/synchronization/**/*

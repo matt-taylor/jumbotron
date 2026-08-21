@@ -1,0 +1,14 @@
+{
+  "clock": 0,
+  "displayClock": "0:00",
+  "period": 2,
+  "type": {
+    "id": "2",
+    "name": "STATUS_IN_PROGRESS",
+    "state": "in",
+    "completed": false,
+    "description": "Halftime",
+    "detail": "Halftime",
+    "shortDetail": "Halftime"
+  }
+}

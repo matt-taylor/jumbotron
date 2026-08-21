@@ -1,0 +1,13 @@
+/.bundle/
+/doc/
+/log/*.log
+/pkg/
+/tmp/
+.env
+/coverage
+/spec/examples.txt
+/rails_app/tmp
+/rails_app/log
+/**/*.log*
+/**/*.keep
+/**/*.DS_Store

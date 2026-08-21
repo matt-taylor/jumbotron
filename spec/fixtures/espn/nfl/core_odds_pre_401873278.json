@@ -1,0 +1,173 @@
+{
+  "count": 1,
+  "pageIndex": 1,
+  "pageSize": 25,
+  "pageCount": 1,
+  "items": [
+    {
+      "provider": {
+        "$ref": "http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/providers/100?lang=en&region=us",
+        "id": "100",
+        "name": "Draft Kings",
+        "priority": 1
+      },
+      "details": "DEN -3.5",
+      "spread": 3.5,
+      "overUnder": 40.5,
+      "overOdds": -108.0,
+      "underOdds": -112.0,
+      "homeTeamOdds": {
+        "favorite": false,
+        "underdog": true,
+        "moneyLine": 160,
+        "spreadOdds": -102.0,
+        "open": {
+          "favorite": false,
+          "pointSpread": {
+            "alternateDisplayValue": "+3.5",
+            "american": "+3.5"
+          },
+          "spread": {
+            "value": 1.9,
+            "displayValue": "10/11",
+            "alternateDisplayValue": "-110",
+            "decimal": 1.9,
+            "fraction": "10/11",
+            "american": "-110"
+          },
+          "moneyLine": {
+            "value": 2.6,
+            "displayValue": "8/5",
+            "alternateDisplayValue": "+160",
+            "decimal": 2.6,
+            "fraction": "8/5",
+            "american": "+160"
+          }
+        },
+        "current": {
+          "pointSpread": {
+            "alternateDisplayValue": "+3.5",
+            "american": "+3.5"
+          },
+          "spread": {
+            "value": 1.98,
+            "displayValue": "50/51",
+            "alternateDisplayValue": "-102",
+            "decimal": 1.98,
+            "fraction": "50/51",
+            "american": "-102"
+          },
+          "moneyLine": {
+            "value": 2.6,
+            "displayValue": "8/5",
+            "alternateDisplayValue": "+160",
+            "decimal": 2.6,
+            "fraction": "8/5",
+            "american": "+160"
+          }
+        },
+        "team": {
+          "$ref": "http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2026/teams/1?lang=en&region=us"
+        }
+      },
+      "awayTeamOdds": {
+        "favorite": true,
+        "underdog": false,
+        "moneyLine": -192,
+        "spreadOdds": -118.0,
+        "open": {
+          "favorite": true,
+          "pointSpread": {
+            "alternateDisplayValue": "-3.5",
+            "american": "-3.5"
+          },
+          "spread": {
+            "value": 1.9,
+            "displayValue": "10/11",
+            "alternateDisplayValue": "-110",
+            "decimal": 1.9,
+            "fraction": "10/11",
+            "american": "-110"
+          },
+          "moneyLine": {
+            "value": 1.52,
+            "displayValue": "25/48",
+            "alternateDisplayValue": "-192",
+            "decimal": 1.52,
+            "fraction": "25/48",
+            "american": "-192"
+          }
+        },
+        "current": {
+          "pointSpread": {
+            "alternateDisplayValue": "-3.5",
+            "american": "-3.5"
+          },
+          "spread": {
+            "value": 1.84,
+            "displayValue": "50/59",
+            "alternateDisplayValue": "-118",
+            "decimal": 1.84,
+            "fraction": "50/59",
+            "american": "-118"
+          },
+          "moneyLine": {
+            "value": 1.52,
+            "displayValue": "25/48",
+            "alternateDisplayValue": "-192",
+            "decimal": 1.52,
+            "fraction": "25/48",
+            "american": "-192"
+          }
+        },
+        "team": {
+          "$ref": "http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2026/teams/7?lang=en&region=us"
+        }
+      },
+      "open": {
+        "over": {
+          "value": 1.9,
+          "displayValue": "10/11",
+          "alternateDisplayValue": "-110",
+          "decimal": 1.9,
+          "fraction": "10/11",
+          "american": "-110"
+        },
+        "under": {
+          "value": 1.9,
+          "displayValue": "10/11",
+          "alternateDisplayValue": "-110",
+          "decimal": 1.9,
+          "fraction": "10/11",
+          "american": "-110"
+        },
+        "total": {
+          "alternateDisplayValue": "37.5",
+          "american": "37.5"
+        }
+      },
+      "current": {
+        "over": {
+          "value": 1.92,
+          "displayValue": "25/27",
+          "alternateDisplayValue": "-108",
+          "decimal": 1.92,
+          "fraction": "25/27",
+          "american": "-108"
+        },
+        "under": {
+          "value": 1.89,
+          "displayValue": "25/28",
+          "alternateDisplayValue": "-112",
+          "decimal": 1.89,
+          "fraction": "25/28",
+          "american": "-112"
+        },
+        "total": {
+          "alternateDisplayValue": "40.5",
+          "american": "40.5"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "clock": 261,
+  "displayClock": "4:21",
+  "period": 3,
+  "type": {
+    "id": "2",
+    "name": "STATUS_IN_PROGRESS",
+    "state": "in",
+    "completed": false,
+    "description": "In Progress",
+    "detail": "4:21 - 3rd Quarter",
+    "shortDetail": "4:21 - 3rd"
+  }
+}
