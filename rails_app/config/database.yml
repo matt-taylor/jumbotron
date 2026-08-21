@@ -14,4 +14,4 @@ development:
 
 test:
   <<: *default
-  database: jumbotron_dummy_test
+  database: <%= ENV.fetch("MYSQL_DATABASE", "jumbotron_dummy_test") %>
