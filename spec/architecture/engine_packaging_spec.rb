@@ -55,4 +55,10 @@ RSpec.describe "Jumbotron engine packaging" do
       a_string_matching(%r{\Adb/migrate/\d+_create_jumbotron_game_graph\.rb\z})
     )
   end
+
+  it "packages the host Testing API, testing docs, and factories" do
+    expect(spec.files).to include("lib/jumbotron/testing.rb")
+    expect(spec.files).to include("docs/testing.md")
+    expect(spec.files).to include("spec/factories/jumbotron/game.rb")
+  end
 end

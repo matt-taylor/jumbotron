@@ -2,4 +2,13 @@
 
 Jumbotron is a backend sports-truth Rails Engine.
 
-More information is coming later.
+## Testing
+
+Shared factories for hosts:
+
+```ruby
+require "jumbotron/testing"
+Jumbotron::Testing.install!
+```
+
+Details: [Testing with Jumbotron](docs/testing.md).
