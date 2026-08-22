@@ -6,11 +6,9 @@ require File.expand_path("../rails_app/config/environment.rb", __dir__)
 abort("The Rails environment is running in <#{Rails.env}> mode!") unless Rails.env.test?
 require "rspec/rails"
 require "factory_bot_rails"
+require "jumbotron/testing"
 
-FactoryBot.definition_file_paths = [
-  Jumbotron::Engine.root.join("spec/factories").to_s
-]
-FactoryBot.reload
+Jumbotron::Testing.install!
 
 ActiveRecord::Migrator.migrations_paths = [
   Jumbotron::Engine.root.join("db/migrate").to_s,
