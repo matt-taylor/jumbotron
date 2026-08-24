@@ -21,6 +21,6 @@ Gem::Specification.new do |spec|
     Dir["{app,db,lib,docs}/**/*", "spec/factories/**/*", "MIT-LICENSE", "README.md"]
   end
 
-  spec.add_dependency "command_tower", ">= 0.11"
+  spec.add_dependency "command_tower", ">= 0.12"
   spec.add_dependency "rails", ">= 7.0", "< 9.0"
 end

@@ -64,7 +64,7 @@ RSpec.describe Jumbotron::Scheduling::Backends::SolidQueue do
         expect(test_section[key]["class"]).to eq("Jumbotron::LineUpdateJob")
         expect(test_section[key]["args"]).to eq([{ "adapter_id" => "espn_nfl", "policy_id" => policy_id }])
       end
-      expect(test_section["jumbotron:espn_nfl:live"]["schedule"]).to eq("every 2 minutes")
+      expect(test_section["jumbotron:espn_nfl:live"]["schedule"]).to eq("every minute")
 
       first = path.read
       backend.materialize(schedules, path: path)
