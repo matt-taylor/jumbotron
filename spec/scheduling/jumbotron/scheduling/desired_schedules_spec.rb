@@ -35,7 +35,7 @@ RSpec.describe Jumbotron::Scheduling::DesiredSchedules do
     live = described_class.call.find { |schedule| schedule.arguments["policy_id"] == "live" }
 
     expect(live.cadence).to eq(adapter.policy(:live).cadence)
-    expect(live.cadence.interval_seconds).to eq(120)
+    expect(live.cadence.interval_seconds).to eq(60)
   end
 
   it "omits unregistered adapters" do

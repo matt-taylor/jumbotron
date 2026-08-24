@@ -41,7 +41,7 @@ RSpec.describe Jumbotron::Scheduling::Backends::SidekiqCron do
     )
     live = job_class.registry.fetch("jumbotron:espn_nfl:live")
     expect(live.klass).to eq("Jumbotron::GameUpdateJob")
-    expect(live.cron).to eq("*/2 * * * *")
+    expect(live.cron).to eq("*/1 * * * *")
     expect(live.args).to eq([{ "adapter_id" => "espn_nfl", "policy_id" => "live" }])
     lines = job_class.registry.fetch("jumbotron:espn_nfl:in_progress_lines")
     expect(lines.klass).to eq("Jumbotron::LineUpdateJob")
