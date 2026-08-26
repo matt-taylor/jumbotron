@@ -19,7 +19,7 @@ x-common-environment: &common-environment
 
 services:
   mysql:
-    image: mysql:latest
+    image: mariadb:10.11.14
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_HOST=mysql

@@ -9,6 +9,8 @@ module Jumbotron
              inverse_of: :observation_batch,
              dependent: :restrict_with_exception
 
+    attribute :metadata, :json, default: -> { {} }
+
     validates :provider, :adapter_scope, :observed_at, presence: true
   end
 end

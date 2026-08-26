@@ -11,7 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
-  create_table "jumbotron_bookmakers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_bookmakers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "changed_at", null: false
     t.datetime "created_at", null: false
     t.string "name", null: false
@@ -19,7 +19,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "jumbotron_game_participants", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_game_participants", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "changed_at", null: false
     t.datetime "created_at", null: false
     t.bigint "game_id", null: false
@@ -34,7 +34,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["team_id"], name: "index_jumbotron_game_participants_on_team_id"
   end
 
-  create_table "jumbotron_games", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_games", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "changed_at", null: false
     t.datetime "created_at", null: false
     t.bigint "league_id", null: false
@@ -60,7 +60,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["venue_id"], name: "index_jumbotron_games_on_venue_id"
   end
 
-  create_table "jumbotron_historical_changes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_historical_changes", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "attribute_name", null: false
     t.datetime "created_at", null: false
     t.json "new_value"
@@ -75,7 +75,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["subject_type", "subject_id"], name: "idx_jumbotron_hist_changes_subject"
   end
 
-  create_table "jumbotron_leagues", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_leagues", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.bigint "sport_id", null: false
@@ -83,7 +83,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["sport_id"], name: "index_jumbotron_leagues_on_sport_id"
   end
 
-  create_table "jumbotron_line_observations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_line_observations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "bookmaker_id", null: false
     t.datetime "changed_at", null: false
     t.datetime "created_at", null: false
@@ -102,7 +102,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["observation_batch_id"], name: "index_jumbotron_line_observations_on_observation_batch_id"
   end
 
-  create_table "jumbotron_observation_batches", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_observation_batches", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "adapter_scope", null: false
     t.datetime "created_at", null: false
     t.json "metadata"
@@ -112,7 +112,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["provider", "adapter_scope", "observed_at"], name: "idx_jumbotron_obs_batches_scope_time"
   end
 
-  create_table "jumbotron_provider_identities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_provider_identities", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "object_namespace", limit: 64, null: false
     t.string "provider", limit: 64, null: false
@@ -124,7 +124,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["target_type", "target_id"], name: "idx_jumbotron_pi_target"
   end
 
-  create_table "jumbotron_schedule_groups", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_schedule_groups", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "kind", null: false
     t.string "name", null: false
@@ -137,7 +137,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["season_phase_id"], name: "index_jumbotron_schedule_groups_on_season_phase_id"
   end
 
-  create_table "jumbotron_season_phases", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_season_phases", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.bigint "season_id", null: false
@@ -145,7 +145,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["season_id"], name: "index_jumbotron_season_phases_on_season_id"
   end
 
-  create_table "jumbotron_seasons", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_seasons", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.date "ends_on"
     t.bigint "league_id", null: false
@@ -155,13 +155,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["league_id"], name: "index_jumbotron_seasons_on_league_id"
   end
 
-  create_table "jumbotron_sports", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_sports", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "jumbotron_teams", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_teams", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "changed_at", null: false
     t.datetime "created_at", null: false
     t.string "name", null: false
@@ -169,7 +169,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "jumbotron_venues", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jumbotron_venues", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "changed_at", null: false
     t.datetime "created_at", null: false
     t.string "name", null: false
@@ -177,7 +177,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "messaging_channel_deliveries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "messaging_channel_deliveries", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "channel_key", null: false
     t.bigint "communication_id", null: false
     t.datetime "created_at", null: false
@@ -190,7 +190,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["status", "execution_claimed_at", "updated_at"], name: "index_messaging_channel_deliveries_on_execution_recovery"
   end
 
-  create_table "messaging_communications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "messaging_communications", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "accept_request_fingerprint"
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -207,7 +207,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["user_id"], name: "index_messaging_communications_on_user_id"
   end
 
-  create_table "messaging_delivery_attempts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "messaging_delivery_attempts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "channel_delivery_id", null: false
     t.datetime "created_at", null: false
     t.string "error_class"
@@ -222,7 +222,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["channel_delivery_id"], name: "index_messaging_delivery_attempts_on_channel_delivery_id"
   end
 
-  create_table "messaging_destination_plans", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "messaging_destination_plans", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "communication_id", null: false
     t.datetime "created_at", null: false
     t.text "decision"
@@ -230,7 +230,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["communication_id"], name: "index_messaging_destination_plans_on_communication_id", unique: true
   end
 
-  create_table "messaging_endpoint_pushover_credentials", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "messaging_endpoint_pushover_credentials", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "application_token_ciphertext", null: false
     t.datetime "created_at", null: false
     t.integer "encryption_key_version", default: 1, null: false
@@ -240,7 +240,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["messaging_endpoint_id"], name: "index_messaging_pushover_credentials_on_endpoint_id", unique: true
   end
 
-  create_table "messaging_endpoints", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "messaging_endpoints", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "active_fingerprint"
     t.text "address_ciphertext"
     t.string "address_fingerprint", null: false
@@ -265,7 +265,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.check_constraint "`verification_state` in (_utf8mb4'unverified',_utf8mb4'pending',_utf8mb4'verified',_utf8mb4'failed')", name: "chk_messaging_endpoints_verification"
   end
 
-  create_table "messaging_inbox_items", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "messaging_inbox_items", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "archived_at"
     t.bigint "communication_id", null: false
     t.datetime "created_at", null: false
@@ -277,7 +277,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["deleted_at", "archived_at", "viewed_at"], name: "index_messaging_inbox_items_on_lifecycle"
   end
 
-  create_table "messaging_notification_preferences", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "messaging_notification_preferences", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "notification_type_key", null: false
     t.text "state", null: false
@@ -287,7 +287,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["user_id"], name: "index_messaging_notification_preferences_on_user_id"
   end
 
-  create_table "user_secrets", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "user_secrets", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "death_time"
     t.string "extra"
@@ -301,7 +301,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
     t.index ["user_id"], name: "index_user_secrets_on_user_id"
   end
 
-  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.boolean "email_validated", default: false
