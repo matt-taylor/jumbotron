@@ -163,6 +163,13 @@ RSpec.describe Jumbotron::Services::Canonical::UpsertGame do
         expect(game.changed_at).to eq(observed_at)
         expect(clock_change_set).not_to be_any
       end
+
+      it "preserves Public::Game.id across normal progress refresh (logo rotation seed)" do
+        expect(game.id).to eq(created_game.id)
+
+        public_game = Jumbotron::Services::Public::AssemblePublicGame.call(game: game).data[:public_game]
+        expect(public_game.id).to eq(created_game.id)
+      end
     end
 
     context "when a later sync repeats the same progress" do

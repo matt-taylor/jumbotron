@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_27_150001) do
   create_table "jumbotron_bookmakers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "changed_at", null: false
     t.datetime "created_at", null: false
@@ -63,16 +63,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
   create_table "jumbotron_historical_changes", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "attribute_name", null: false
     t.datetime "created_at", null: false
-    t.json "new_value"
+    t.text "new_value", size: :long, collation: "utf8mb4_bin"
     t.bigint "observation_batch_id", null: false
     t.datetime "observed_at", null: false
-    t.json "previous_value"
+    t.text "previous_value", size: :long, collation: "utf8mb4_bin"
     t.string "provider", null: false
     t.bigint "subject_id", null: false
     t.string "subject_type", null: false
     t.datetime "updated_at", null: false
     t.index ["observation_batch_id"], name: "idx_jumbotron_hist_changes_batch"
     t.index ["subject_type", "subject_id"], name: "idx_jumbotron_hist_changes_subject"
+    t.check_constraint "json_valid(`new_value`)", name: "new_value"
+    t.check_constraint "json_valid(`previous_value`)", name: "previous_value"
   end
 
   create_table "jumbotron_leagues", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -105,11 +107,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
   create_table "jumbotron_observation_batches", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "adapter_scope", null: false
     t.datetime "created_at", null: false
-    t.json "metadata"
+    t.text "metadata", size: :long, collation: "utf8mb4_bin"
     t.datetime "observed_at", null: false
     t.string "provider", null: false
     t.datetime "updated_at", null: false
     t.index ["provider", "adapter_scope", "observed_at"], name: "idx_jumbotron_obs_batches_scope_time"
+    t.check_constraint "json_valid(`metadata`)", name: "metadata"
   end
 
   create_table "jumbotron_provider_identities", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -164,9 +167,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
   create_table "jumbotron_teams", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "changed_at", null: false
     t.datetime "created_at", null: false
+    t.string "key", limit: 191, null: false
     t.string "name", null: false
     t.datetime "observed_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_jumbotron_teams_on_key", unique: true
   end
 
   create_table "jumbotron_venues", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

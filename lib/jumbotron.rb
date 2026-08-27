@@ -3,6 +3,7 @@
 require "rails"
 require "command_tower"
 require "jumbotron/version"
+require "jumbotron/team_key"
 require "jumbotron/engine"
 require "jumbotron/client"
 
