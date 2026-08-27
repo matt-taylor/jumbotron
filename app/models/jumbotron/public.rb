@@ -19,7 +19,7 @@ module Jumbotron
       :season_phase,
       :kind
     )
-    Team = Data.define(:id, :name)
+    Team = Data.define(:id, :name, :key)
     Venue = Data.define(:id, :name)
     Participant = Data.define(:role, :score, :result, :team)
     GameSegment = Data.define(:kind, :number)

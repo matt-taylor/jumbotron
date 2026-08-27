@@ -69,7 +69,11 @@ module Jumbotron
             role: participant.role,
             score: participant.score,
             result: participant.result,
-            team: Jumbotron::Public::Team.new(id: participant.team.id, name: participant.team.name)
+            team: Jumbotron::Public::Team.new(
+              id: participant.team.id,
+              name: participant.team.name,
+              key: participant.team.key
+            )
           )
         end
 
