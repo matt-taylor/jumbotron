@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe Jumbotron::Services::Public::AssemblePublicGame do
-  let(:home) { create(:jumbotron_team, name: "Buffalo Bills") }
-  let(:away) { create(:jumbotron_team, name: "Miami Dolphins") }
+  let(:home) { create(:jumbotron_team, name: "Buffalo Bills", nickname: "Bills") }
+  let(:away) { create(:jumbotron_team, name: "Miami Dolphins", nickname: "Dolphins") }
   let(:game) { create(:jumbotron_game, lifecycle: "scheduled") }
 
   before do
@@ -21,14 +21,24 @@ RSpec.describe Jumbotron::Services::Public::AssemblePublicGame do
         expect(result.data[:public_game]).not_to be_a(ActiveRecord::Base)
       end
 
-      it "includes immutable semantic Public::Team.key alongside id and name" do
+      it "includes immutable semantic Public::Team.key alongside id, name, and nickname" do
         public_game = result.data[:public_game]
         teams = public_game.participants.map(&:team)
 
-        expect(Jumbotron::Public::Team.members).to eq(%i[id name key])
+        expect(Jumbotron::Public::Team.members).to eq(%i[id name nickname key])
         expect(teams).to contain_exactly(
-          have_attributes(id: home.id, name: "Buffalo Bills", key: "buffalo-bills"),
-          have_attributes(id: away.id, name: "Miami Dolphins", key: "miami-dolphins")
+          have_attributes(
+            id: home.id,
+            name: "Buffalo Bills",
+            nickname: "Bills",
+            key: "buffalo-bills"
+          ),
+          have_attributes(
+            id: away.id,
+            name: "Miami Dolphins",
+            nickname: "Dolphins",
+            key: "miami-dolphins"
+          )
         )
         expect(teams.map(&:key)).not_to include(home.id.to_s, away.id.to_s)
         expect(teams.map(&:key)).to all(match(Jumbotron::TeamKey::FORMAT))

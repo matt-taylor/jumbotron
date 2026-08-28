@@ -57,6 +57,7 @@ module Jumbotron
             team.name = team_input.name
             team.changed_at = observed_at
           end
+          apply_nickname!(team)
           # key is immutable after assignment — never regenerate from name or provider id
           team.observed_at = observed_at
           team.save!
@@ -66,13 +67,36 @@ module Jumbotron
         def create_new!
           team = Team.create!(
             name: team_input.name,
+            nickname: team_input.nickname,
             key: allocate_key!(team_input.name),
             observed_at: observed_at,
             changed_at: observed_at
           )
           change_set.record(subject: team, attribute: "name", previous: nil, new_value: team.name)
           change_set.record(subject: team, attribute: "key", previous: nil, new_value: team.key)
+          if team.nickname.present?
+            change_set.record(
+              subject: team,
+              attribute: "nickname",
+              previous: nil,
+              new_value: team.nickname
+            )
+          end
           team
+        end
+
+        def apply_nickname!(team)
+          return if team_input.nickname.nil?
+          return if team.nickname == team_input.nickname
+
+          change_set.record(
+            subject: team,
+            attribute: "nickname",
+            previous: team.nickname,
+            new_value: team_input.nickname
+          )
+          team.nickname = team_input.nickname
+          team.changed_at = observed_at
         end
 
         def allocate_key!(name)

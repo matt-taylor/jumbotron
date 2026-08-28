@@ -72,6 +72,7 @@ module Jumbotron
             team: Jumbotron::Public::Team.new(
               id: participant.team.id,
               name: participant.team.name,
+              nickname: participant.team.nickname,
               key: participant.team.key
             )
           )

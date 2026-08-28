@@ -103,6 +103,7 @@ module Jumbotron
                 Canonical::ProviderIdentityRef.new(provider: "espn", namespace: "team", id: team.id.to_s)
               ],
               team_name: name.to_s,
+              team_nickname: TeamNickname.resolve(team),
               role: competitor.home_away.to_s,
               score: coerce_score(competitor.score),
               result: coerce_result(competitor.winner, lifecycle)
