@@ -5,7 +5,7 @@ RSpec.describe Jumbotron::Services::Canonical::UpsertTeam do
   let(:change_set) { Jumbotron::Canonical::ChangeSet.new }
   let(:provider_id) { "2" }
 
-  def team_input(name:, provider_id: self.provider_id)
+  def team_input(name:, provider_id: self.provider_id, nickname: nil)
     Jumbotron::Canonical::TeamInput.new(
       provider_identities: [
         Jumbotron::Canonical::ProviderIdentityRef.new(
@@ -14,13 +14,14 @@ RSpec.describe Jumbotron::Services::Canonical::UpsertTeam do
           id: provider_id
         )
       ],
-      name: name
+      name: name,
+      nickname: nickname
     )
   end
 
-  def upsert!(name:, provider_id: self.provider_id, change_set: self.change_set)
+  def upsert!(name:, provider_id: self.provider_id, nickname: nil, change_set: self.change_set)
     described_class.call(
-      team_input: team_input(name: name, provider_id: provider_id),
+      team_input: team_input(name: name, provider_id: provider_id, nickname: nickname),
       observed_at: observed_at,
       change_set: change_set
     )
@@ -79,5 +80,36 @@ RSpec.describe Jumbotron::Services::Canonical::UpsertTeam do
 
     expect(Jumbotron::Team.where(key: "buffalo-bills").count).to eq(1)
     expect(other.key).to match(/\Abuffalo-bills-\d+\z/)
+  end
+
+  context "when nickname is provided on create" do
+    subject(:result) { upsert!(name: "Buffalo Bills", nickname: "Bills") }
+
+    it "persists nickname" do
+      expect(result).to be_success
+      expect(result.data[:team].nickname).to eq("Bills")
+    end
+  end
+
+  context "when nickname is provided on update" do
+    before { upsert!(name: "Buffalo Bills", nickname: "Bills") }
+
+    subject(:result) { upsert!(name: "Buffalo Bills", nickname: "Buffalo") }
+
+    it "updates nickname" do
+      expect(result).to be_success
+      expect(result.data[:team].nickname).to eq("Buffalo")
+    end
+  end
+
+  context "when nickname input is nil on re-upsert" do
+    before { upsert!(name: "Buffalo Bills", nickname: "Bills") }
+
+    subject(:result) { upsert!(name: "Buffalo Bills", nickname: nil) }
+
+    it "leaves the existing nickname unchanged" do
+      expect(result).to be_success
+      expect(result.data[:team].nickname).to eq("Bills")
+    end
   end
 end

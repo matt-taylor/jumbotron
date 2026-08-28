@@ -24,7 +24,8 @@ module Jumbotron
               provider_identities: [
                 Canonical::ProviderIdentityRef.new(provider: "espn", namespace: "team", id: team.id.to_s)
               ],
-              name: name.to_s
+              name: name.to_s,
+              nickname: TeamNickname.resolve(team)
             )
           end
           private_class_method :transform_team

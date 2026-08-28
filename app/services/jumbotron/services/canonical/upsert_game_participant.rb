@@ -13,7 +13,8 @@ module Jumbotron
           team_result = UpsertTeam.call(
             team_input: Jumbotron::Canonical::TeamInput.new(
               provider_identities: participant_input.provider_identities,
-              name: participant_input.team_name
+              name: participant_input.team_name,
+              nickname: participant_input.team_nickname
             ),
             observed_at: observed_at,
             change_set: change_set

@@ -4,7 +4,11 @@ module Jumbotron
   module Canonical
     ProviderIdentityRef = Data.define(:provider, :namespace, :id)
 
-    TeamInput = Data.define(:provider_identities, :name)
+    TeamInput = Data.define(:provider_identities, :name, :nickname) do
+      def initialize(provider_identities:, name:, nickname: nil)
+        super
+      end
+    end
 
     VenueInput = Data.define(:provider_identities, :name)
 
@@ -13,8 +17,13 @@ module Jumbotron
       :team_name,
       :role,
       :score,
-      :result
-    )
+      :result,
+      :team_nickname
+    ) do
+      def initialize(provider_identities:, team_name:, role:, score:, result:, team_nickname: nil)
+        super
+      end
+    end
 
     ScheduleGroupInput = Data.define(:kind, :number, :name)
 

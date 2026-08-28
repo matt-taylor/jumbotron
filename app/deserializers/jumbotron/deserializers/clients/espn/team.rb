@@ -12,6 +12,7 @@ module Jumbotron
             field :display_name, type: Support.types.string, required: true
             field :short_display_name, type: Support.types.string, nullable: true
             field :name, type: Support.types.string, nullable: true
+            field :nickname, type: Support.types.string, nullable: true
             field :location, type: Support.types.string, nullable: true
           end
 
@@ -25,6 +26,7 @@ module Jumbotron
               display_name: Support.payload.fetch(payload, "displayName"),
               short_display_name: Support.payload.fetch(payload, "shortDisplayName"),
               name: Support.payload.fetch(payload, "name"),
+              nickname: Support.payload.fetch(payload, "nickname"),
               location: Support.payload.fetch(payload, "location")
             )
           end

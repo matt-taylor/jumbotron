@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_27_150001) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_28_180001) do
   create_table "jumbotron_bookmakers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "changed_at", null: false
     t.datetime "created_at", null: false
@@ -169,6 +169,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_27_150001) do
     t.datetime "created_at", null: false
     t.string "key", limit: 191, null: false
     t.string "name", null: false
+    t.string "nickname"
     t.datetime "observed_at", null: false
     t.datetime "updated_at", null: false
     t.index ["key"], name: "index_jumbotron_teams_on_key", unique: true

@@ -104,6 +104,18 @@ RSpec.describe "Jumbotron::Adapters::Espn::NflHelpers transformers" do
         Jumbotron::Adapters::Espn::NflHelpers::Lifecycle.call("STATUS_WEIRD")
       end.to raise_error(Jumbotron::Adapters::TransformError, /unsupported ESPN status/)
     end
+
+    context "when mapping participant nicknames from scoreboard teams" do
+      let(:board) { acquire_scoreboard(fixture_root.join("scoreboard_2025_w1.json").read) }
+
+      subject(:nicknames) do
+        described_class.call(board, observed_at: observed_at).games.first.participants.map(&:team_nickname)
+      end
+
+      it "fills team_nickname from provider name when ESPN nickname is absent" do
+        expect(nicknames).to contain_exactly("Eagles", "Cowboys")
+      end
+    end
   end
 
   describe Jumbotron::Adapters::Espn::NflHelpers::Teams do
@@ -118,6 +130,20 @@ RSpec.describe "Jumbotron::Adapters::Espn::NflHelpers transformers" do
         provider: "espn",
         namespace: "team"
       )
+    end
+
+    context "when mapping representative NFL catalog nicknames" do
+      let(:teams) { acquire_teams(fixture_root.join("teams.json").read) }
+
+      subject(:by_display_name) do
+        described_class.call(teams, observed_at: observed_at).teams.index_by(&:name)
+      end
+
+      it "maps Commanders, Ravens, and 49ers nicknames from provider fields" do
+        expect(by_display_name["Washington Commanders"].nickname).to eq("Commanders")
+        expect(by_display_name["Baltimore Ravens"].nickname).to eq("Ravens")
+        expect(by_display_name["San Francisco 49ers"].nickname).to eq("49ers")
+      end
     end
   end
 
