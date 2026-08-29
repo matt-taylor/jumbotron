@@ -13,6 +13,7 @@ module Jumbotron
             field :winner, type: Support.types.boolean, nullable: true
             field :order, type: Support.types.integer, nullable: true
             field :team, type: Team::Result, required: true
+            field :records, type: Support.types.array(CompetitorRecord::Result), nullable: true
           end
 
           def self.call(payload)
@@ -25,9 +26,21 @@ module Jumbotron
               score: coerce_score(Support.payload.fetch(payload, "score")),
               winner: Support.payload.fetch(payload, "winner"),
               order: Support.payload.fetch(payload, "order"),
-              team: Support.nest("team", Support.payload.fetch(payload, "team")) { |raw| Team.call(raw) }
+              team: Support.nest("team", Support.payload.fetch(payload, "team")) { |raw| Team.call(raw) },
+              records: map_records(Support.payload.fetch(payload, "records"))
             )
           end
+
+          def self.map_records(raw)
+            return nil if raw.equal?(Support.missing) || raw.nil?
+
+            Array(raw).each_with_index.map do |item, index|
+              CompetitorRecord.call(item)
+            rescue CommandTower::Clients::Errors::DeserializationError => e
+              raise CommandTower::Deserializers::Clients::Errors.prefix(e, "records[#{index}]")
+            end
+          end
+          private_class_method :map_records
 
           def self.coerce_id(raw)
             return raw if raw.equal?(Support.missing) || raw.nil? || raw.is_a?(String)

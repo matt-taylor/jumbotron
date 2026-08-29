@@ -13,6 +13,7 @@ RSpec.describe Jumbotron::Scheduling::DesiredSchedules do
       "jumbotron:espn_nfl:upcoming",
       "jumbotron:espn_nfl:live",
       "jumbotron:espn_nfl:interrupted",
+      "jumbotron:espn_nfl:post_final_record",
       "jumbotron:espn_nfl:far_future_lines",
       "jumbotron:espn_nfl:near_future_lines",
       "jumbotron:espn_nfl:upcoming_lines",

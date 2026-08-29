@@ -25,19 +25,21 @@ RSpec.describe Jumbotron::Services::Public::AssemblePublicGame do
         public_game = result.data[:public_game]
         teams = public_game.participants.map(&:team)
 
-        expect(Jumbotron::Public::Team.members).to eq(%i[id name nickname key])
+        expect(Jumbotron::Public::Team.members).to eq(%i[id name nickname key abbreviation])
         expect(teams).to contain_exactly(
           have_attributes(
             id: home.id,
             name: "Buffalo Bills",
             nickname: "Bills",
-            key: "buffalo-bills"
+            key: "buffalo-bills",
+            abbreviation: nil
           ),
           have_attributes(
             id: away.id,
             name: "Miami Dolphins",
             nickname: "Dolphins",
-            key: "miami-dolphins"
+            key: "miami-dolphins",
+            abbreviation: nil
           )
         )
         expect(teams.map(&:key)).not_to include(home.id.to_s, away.id.to_s)
@@ -88,6 +90,64 @@ RSpec.describe Jumbotron::Services::Public::AssemblePublicGame do
         expect(result.data[:public_game].progress.state).to eq("intermission")
         expect(result.data[:public_game].progress.segment).to have_attributes(kind: "quarter", number: 2)
         expect(result.data[:public_game].progress.clock).to be_nil
+      end
+    end
+
+    context "when a scheduled game has entering record and venue address" do
+      let(:venue) { create(:jumbotron_venue, name: "Highmark Stadium", city: "Orchard Park", region: "NY") }
+      let(:game) { create(:jumbotron_game, lifecycle: "scheduled", venue: venue) }
+
+      before do
+        home.update!(abbreviation: "BUF")
+        Jumbotron::GameParticipant.find_by!(game: game, team: home).update!(
+          record_summary_entering: "8-3"
+        )
+      end
+
+      subject(:result) { described_class.call(game: game.reload) }
+
+      it "projects entering record and venue city/region" do
+        public_game = result.data[:public_game]
+        home_participant = public_game.participants.find { |p| p.role == "home" }
+
+        expect(home_participant.record).to eq("8-3")
+        expect(home_participant.team.abbreviation).to eq("BUF")
+        expect(public_game.venue).to have_attributes(city: "Orchard Park", region: "NY")
+      end
+    end
+
+    context "when a completed game has no post-game observation" do
+      let(:game) { create(:jumbotron_game, lifecycle: "completed") }
+
+      before do
+        Jumbotron::GameParticipant.find_by!(game: game, team: home).update!(
+          record_summary_entering: "8-3"
+        )
+      end
+
+      subject(:result) { described_class.call(game: game.reload) }
+
+      it "omits record rather than falling back to entering" do
+        home_participant = result.data[:public_game].participants.find { |p| p.role == "home" }
+        expect(home_participant.record).to be_nil
+      end
+    end
+
+    context "when a completed game has a post-game observation" do
+      let(:game) { create(:jumbotron_game, lifecycle: "completed") }
+
+      before do
+        Jumbotron::GameParticipant.find_by!(game: game, team: home).update!(
+          record_summary_entering: "8-3",
+          record_summary_post_game: "9-3"
+        )
+      end
+
+      subject(:result) { described_class.call(game: game.reload) }
+
+      it "projects the post-game record" do
+        home_participant = result.data[:public_game].participants.find { |p| p.role == "home" }
+        expect(home_participant.record).to eq("9-3")
       end
     end
   end

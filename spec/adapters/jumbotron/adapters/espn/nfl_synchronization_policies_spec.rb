@@ -12,7 +12,7 @@ RSpec.describe Jumbotron::Adapters::Espn::Nfl, "synchronization policies" do
     it "exposes adapter_id and game plus line policy ids with explicit types" do
       expect(adapter.adapter_id).to eq("espn_nfl")
       expect(adapter.policy_ids).to contain_exactly(
-        :far_future, :near_future, :upcoming, :live, :interrupted,
+        :far_future, :near_future, :upcoming, :live, :interrupted, :post_final_record,
         :far_future_lines, :near_future_lines, :upcoming_lines, :in_progress_lines, :interrupted_lines
       )
 
@@ -21,6 +21,7 @@ RSpec.describe Jumbotron::Adapters::Espn::Nfl, "synchronization policies" do
       expect(adapter.policy(:upcoming).type).to eq(:future_game_update)
       expect(adapter.policy(:live).type).to eq(:live_game_update)
       expect(adapter.policy(:interrupted).type).to eq(:interrupted_game_update)
+      expect(adapter.policy(:post_final_record).type).to eq(:post_final_game_update)
       expect(adapter.policy(:far_future_lines).type).to eq(:future_line_update)
       expect(adapter.policy(:near_future_lines).type).to eq(:future_line_update)
       expect(adapter.policy(:upcoming_lines).type).to eq(:future_line_update)
@@ -42,6 +43,7 @@ RSpec.describe Jumbotron::Adapters::Espn::Nfl, "synchronization policies" do
       expect(adapter.policy(:upcoming).cadence.interval_seconds).to eq(3600)
       expect(adapter.policy(:live).cadence.interval_seconds).to eq(60)
       expect(adapter.policy(:interrupted).cadence.interval_seconds).to eq(3600)
+      expect(adapter.policy(:post_final_record).cadence.interval_seconds).to eq(900)
       expect(adapter.policy(:far_future_lines).cadence.interval_seconds).to eq(604_800)
       expect(adapter.policy(:near_future_lines).cadence.interval_seconds).to eq(86_400)
       expect(adapter.policy(:upcoming_lines).cadence.interval_seconds).to eq(3600)
@@ -94,6 +96,39 @@ RSpec.describe Jumbotron::Adapters::Espn::Nfl, "synchronization policies" do
       expect(adapter.policy(:interrupted_lines).eligible?(postponed, now: now)).to be(true)
       expect(adapter.policy(:upcoming_lines).eligible?(completed, now: now)).to be(false)
       expect(adapter.policy(:far_future_lines).eligible?(cancelled, now: now)).to be(false)
+    end
+
+    it "keeps post_final_record eligible only while post-game record is missing" do
+      pending_participant = instance_double(
+        Jumbotron::GameParticipant,
+        record_summary_post_game: nil
+      )
+      settled_participant = instance_double(
+        Jumbotron::GameParticipant,
+        record_summary_post_game: "9-3"
+      )
+      pending = instance_double(
+        Jumbotron::Game,
+        lifecycle: "completed",
+        changed_at: now - 1.hour,
+        game_participants: [pending_participant]
+      )
+      settled = instance_double(
+        Jumbotron::Game,
+        lifecycle: "completed",
+        changed_at: now - 1.hour,
+        game_participants: [settled_participant]
+      )
+      stale = instance_double(
+        Jumbotron::Game,
+        lifecycle: "completed",
+        changed_at: now - 7.hours,
+        game_participants: [pending_participant]
+      )
+
+      expect(adapter.policy(:post_final_record).eligible?(pending, now: now)).to be(true)
+      expect(adapter.policy(:post_final_record).eligible?(settled, now: now)).to be(false)
+      expect(adapter.policy(:post_final_record).eligible?(stale, now: now)).to be(false)
     end
   end
 

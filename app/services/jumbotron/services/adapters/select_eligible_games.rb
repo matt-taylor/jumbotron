@@ -20,7 +20,7 @@ module Jumbotron
           end
 
           games = Game.where(league_id: league.id)
-                      .includes(:season, :season_phase, :schedule_group)
+                      .includes(:season, :season_phase, :schedule_group, :game_participants)
                       .select { |game| policy.eligible?(game, now: now) }
 
           context.league = league

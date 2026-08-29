@@ -80,11 +80,14 @@ module Jumbotron
             raise TransformError, "venue id required" if venue.id.blank?
             raise TransformError, "venue name required" if venue.full_name.blank?
 
+            address = venue.respond_to?(:address) ? venue.address : nil
             Canonical::VenueInput.new(
               provider_identities: [
                 Canonical::ProviderIdentityRef.new(provider: "espn", namespace: "venue", id: venue.id.to_s)
               ],
-              name: venue.full_name.to_s
+              name: venue.full_name.to_s,
+              city: address&.city.presence,
+              region: address&.state.presence
             )
           end
           private_class_method :transform_venue
@@ -104,12 +107,21 @@ module Jumbotron
               ],
               team_name: name.to_s,
               team_nickname: TeamNickname.resolve(team),
+              team_abbreviation: team.abbreviation.presence,
               role: competitor.home_away.to_s,
               score: coerce_score(competitor.score),
-              result: coerce_result(competitor.winner, lifecycle)
+              result: coerce_result(competitor.winner, lifecycle),
+              record_summary: total_record_summary(competitor)
             )
           end
           private_class_method :transform_participant
+
+          def self.total_record_summary(competitor)
+            records = competitor.respond_to?(:records) ? Array(competitor.records) : []
+            total = records.find { |record| record.type.to_s == "total" }
+            total&.summary.presence
+          end
+          private_class_method :total_record_summary
 
           def self.coerce_score(raw)
             return nil if raw.nil? || raw == ""

@@ -2,7 +2,7 @@
 
 RSpec.describe Jumbotron do
   it "exposes a version" do
-    expect(described_class::VERSION).to eq("0.1.6")
+    expect(described_class::VERSION).to eq("0.1.7")
   end
 
   it "loads an Engine" do

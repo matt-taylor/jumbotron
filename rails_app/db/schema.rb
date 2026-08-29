@@ -24,6 +24,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_180001) do
     t.datetime "created_at", null: false
     t.bigint "game_id", null: false
     t.datetime "observed_at", null: false
+    t.datetime "record_observed_at"
+    t.string "record_summary_current"
+    t.string "record_summary_entering"
+    t.string "record_summary_post_game"
     t.string "result"
     t.string "role"
     t.integer "score"
@@ -165,6 +169,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_180001) do
   end
 
   create_table "jumbotron_teams", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "abbreviation"
     t.datetime "changed_at", null: false
     t.datetime "created_at", null: false
     t.string "key", limit: 191, null: false
@@ -177,9 +182,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_180001) do
 
   create_table "jumbotron_venues", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "changed_at", null: false
+    t.string "city"
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.datetime "observed_at", null: false
+    t.string "region"
     t.datetime "updated_at", null: false
   end
 

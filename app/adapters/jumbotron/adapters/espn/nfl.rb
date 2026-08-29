@@ -66,6 +66,21 @@ module Jumbotron
                  INTERRUPTED_LIFECYCLES.include?(game.lifecycle)
                }
 
+        # Bounded post-final scoreboard re-observation when post-game record is still
+        # missing (Strategy B). Stops after window or once post_game is persisted.
+        policy :post_final_record,
+               type: :post_final_game_update,
+               cadence: Cadence.new(every: 15, unit: :minute),
+               eligible: lambda { |game, now:|
+                 return false unless game.lifecycle == "completed"
+                 return false if game.changed_at.nil? || game.changed_at < now - 6.hours
+
+                 participants = game.game_participants
+                 return false if participants.empty?
+
+                 participants.any? { |participant| participant.record_summary_post_game.blank? }
+               }
+
         policy :far_future_lines,
                type: :future_line_update,
                cadence: Cadence.new(every: 1, unit: :week),
