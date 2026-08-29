@@ -52,6 +52,7 @@ module Jumbotron
 
         def update_existing!(venue_id)
           venue = Venue.lock.find(venue_id)
+          material = false
           if venue.name != venue_input.name
             change_set.record(
               subject: venue,
@@ -60,8 +61,10 @@ module Jumbotron
               new_value: venue_input.name
             )
             venue.name = venue_input.name
-            venue.changed_at = observed_at
+            material = true
           end
+          material |= apply_location!(venue)
+          venue.changed_at = observed_at if material
           venue.observed_at = observed_at
           venue.save!
           venue
@@ -70,11 +73,40 @@ module Jumbotron
         def create_new!
           venue = Venue.create!(
             name: venue_input.name,
+            city: venue_input.city,
+            region: venue_input.region,
             observed_at: observed_at,
             changed_at: observed_at
           )
           change_set.record(subject: venue, attribute: "name", previous: nil, new_value: venue.name)
+          if venue.city.present?
+            change_set.record(subject: venue, attribute: "city", previous: nil, new_value: venue.city)
+          end
+          if venue.region.present?
+            change_set.record(subject: venue, attribute: "region", previous: nil, new_value: venue.region)
+          end
           venue
+        end
+
+        def apply_location!(venue)
+          material = false
+          {
+            city: venue_input.city,
+            region: venue_input.region
+          }.each do |key, value|
+            next if value.nil?
+            next if venue.public_send(key) == value
+
+            change_set.record(
+              subject: venue,
+              attribute: key.to_s,
+              previous: venue.public_send(key),
+              new_value: value
+            )
+            venue.public_send("#{key}=", value)
+            material = true
+          end
+          material
         end
 
         def recover_after_race!

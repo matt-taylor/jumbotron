@@ -9,6 +9,7 @@ module Jumbotron
             field :id, type: Support.types.string, required: true
             field :full_name, type: Support.types.string, required: true
             field :indoor, type: Support.types.boolean, nullable: true
+            field :address, type: VenueAddress::Result, nullable: true
           end
 
           def self.call(payload)
@@ -17,9 +18,17 @@ module Jumbotron
             Result.build!(
               id: coerce_id(Support.payload.fetch(payload, "id")),
               full_name: Support.payload.fetch(payload, "fullName"),
-              indoor: Support.payload.fetch(payload, "indoor")
+              indoor: Support.payload.fetch(payload, "indoor"),
+              address: map_address(Support.payload.fetch(payload, "address"))
             )
           end
+
+          def self.map_address(raw)
+            return nil if raw.equal?(Support.missing) || raw.nil?
+
+            VenueAddress.call(raw)
+          end
+          private_class_method :map_address
 
           def self.coerce_id(raw)
             return raw if raw.equal?(Support.missing) || raw.nil? || raw.is_a?(String)

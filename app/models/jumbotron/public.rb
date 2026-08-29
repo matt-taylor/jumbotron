@@ -19,13 +19,21 @@ module Jumbotron
       :season_phase,
       :kind
     )
-    Team = Data.define(:id, :name, :nickname, :key) do
-      def initialize(id:, name:, key:, nickname: nil)
-        super(id:, name:, nickname:, key:)
+    Team = Data.define(:id, :name, :nickname, :key, :abbreviation) do
+      def initialize(id:, name:, key:, nickname: nil, abbreviation: nil)
+        super(id:, name:, nickname:, key:, abbreviation:)
       end
     end
-    Venue = Data.define(:id, :name)
-    Participant = Data.define(:role, :score, :result, :team)
+    Venue = Data.define(:id, :name, :city, :region) do
+      def initialize(id:, name:, city: nil, region: nil)
+        super
+      end
+    end
+    Participant = Data.define(:role, :score, :result, :team, :record) do
+      def initialize(role:, score:, result:, team:, record: nil)
+        super
+      end
+    end
     GameSegment = Data.define(:kind, :number)
     # Clock label text. Name is canonical/public contract, not Kernel#display.
     GameClock = Data.define(:mode, :seconds, :display) # rubocop:disable Lint/DataDefineOverride

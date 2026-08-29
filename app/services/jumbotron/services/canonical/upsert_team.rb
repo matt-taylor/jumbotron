@@ -58,6 +58,7 @@ module Jumbotron
             team.changed_at = observed_at
           end
           apply_nickname!(team)
+          apply_abbreviation!(team)
           # key is immutable after assignment — never regenerate from name or provider id
           team.observed_at = observed_at
           team.save!
@@ -68,6 +69,7 @@ module Jumbotron
           team = Team.create!(
             name: team_input.name,
             nickname: team_input.nickname,
+            abbreviation: team_input.abbreviation,
             key: allocate_key!(team_input.name),
             observed_at: observed_at,
             changed_at: observed_at
@@ -80,6 +82,14 @@ module Jumbotron
               attribute: "nickname",
               previous: nil,
               new_value: team.nickname
+            )
+          end
+          if team.abbreviation.present?
+            change_set.record(
+              subject: team,
+              attribute: "abbreviation",
+              previous: nil,
+              new_value: team.abbreviation
             )
           end
           team
@@ -96,6 +106,20 @@ module Jumbotron
             new_value: team_input.nickname
           )
           team.nickname = team_input.nickname
+          team.changed_at = observed_at
+        end
+
+        def apply_abbreviation!(team)
+          return if team_input.abbreviation.nil?
+          return if team.abbreviation == team_input.abbreviation
+
+          change_set.record(
+            subject: team,
+            attribute: "abbreviation",
+            previous: team.abbreviation,
+            new_value: team_input.abbreviation
+          )
+          team.abbreviation = team_input.abbreviation
           team.changed_at = observed_at
         end
 

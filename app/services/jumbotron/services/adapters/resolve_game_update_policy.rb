@@ -8,6 +8,7 @@ module Jumbotron
           future_game_update
           live_game_update
           interrupted_game_update
+          post_final_game_update
         ].freeze
 
         validate :adapter_id, required: true

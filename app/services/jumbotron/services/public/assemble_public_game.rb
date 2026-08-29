@@ -61,7 +61,12 @@ module Jumbotron
         def build_venue(venue)
           return if venue.nil?
 
-          Jumbotron::Public::Venue.new(id: venue.id, name: venue.name)
+          Jumbotron::Public::Venue.new(
+            id: venue.id,
+            name: venue.name,
+            city: venue.city,
+            region: venue.region
+          )
         end
 
         def build_participant(participant)
@@ -69,13 +74,26 @@ module Jumbotron
             role: participant.role,
             score: participant.score,
             result: participant.result,
+            record: resolve_presentation_record(participant),
             team: Jumbotron::Public::Team.new(
               id: participant.team.id,
               name: participant.team.name,
               nickname: participant.team.nickname,
-              key: participant.team.key
+              key: participant.team.key,
+              abbreviation: participant.team.abbreviation
             )
           )
+        end
+
+        # Lifecycle-resolved game-time record for presentation. Never falls back to
+        # entering when completed post-game is missing.
+        def resolve_presentation_record(participant)
+          case game.lifecycle
+          when "scheduled", "in_progress", "postponed", "suspended"
+            participant.record_summary_entering
+          when "completed"
+            participant.record_summary_post_game
+          end
         end
 
         def map_currents(lines)
