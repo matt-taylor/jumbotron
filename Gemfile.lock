@@ -309,6 +309,7 @@ PLATFORMS
 
 DEPENDENCIES
   factory_bot_rails
+  json (< 3)
   jumbotron!
   mysql2
   rails (~> 8)
