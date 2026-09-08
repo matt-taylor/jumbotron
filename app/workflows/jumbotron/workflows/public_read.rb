@@ -21,8 +21,9 @@ module Jumbotron
         error = Array(result.errors).first
         code = error.respond_to?(:code) ? error.code.to_s : "invalid_request"
         message = error.respond_to?(:message) ? error.message : error.to_s
+        details = error.respond_to?(:details) && error.details.is_a?(Hash) ? error.details.except(:message) : {}
         status = Public::TranslateOutcome::NOT_FOUND_CODES.include?(code) ? :not_found : :unprocessable_entity
-        failure(errors: [{ code: code, message: message }], http_status: status)
+        failure(errors: [{ code: code, message: message, details: details }], http_status: status)
       end
     end
   end

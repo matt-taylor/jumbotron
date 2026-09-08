@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Jumbotron
-  module Public
+  module Public # rubocop:disable Metrics/ModuleLength
     ALLOWED_INCLUDES = %i[consensus current_lines consensus_constituents].freeze
 
     Sport = Data.define(:id, :name)
@@ -10,6 +10,23 @@ module Jumbotron
     SeasonPhase = Data.define(:id, :name)
     ScheduleGroup = Data.define(:id, :kind, :number, :name)
     ScheduleGroupEnumeration = Data.define(:groups, :completeness)
+    SandboxScheduleSelector = Data.define(:sport, :league, :season, :season_phase)
+    RegisterSandboxProjectionRequest = Data.define(:name, :source)
+    ResetSandboxProjectionRequest = Data.define(:sandbox, :start_week, :anchor_day, :now)
+    SandboxProjection = Data.define(:name, :source, :sandbox)
+    SandboxProjectionReset = Data.define(
+      :projection,
+      :source_anchor_date,
+      :target_anchor_date,
+      :date_shift_days,
+      :projected_game_count,
+      :added_game_count,
+      :updated_game_count,
+      :removed_game_count,
+      :start_week_game_count,
+      :naturally_locked_game_count,
+      :reset_at
+    )
     ScheduleGroupsRequest = Data.define(
       :league_id,
       :sport,

@@ -8,9 +8,11 @@ module Jumbotron
         validate :participant_input, required: true
         validate :observed_at, required: true
         validate :change_set, required: true
+        validate :preserve_existing_team, required: false
 
         def call
-          team_result = UpsertTeam.call(
+          team = existing_team if preserve_existing_team
+          team_result = team || UpsertTeam.call(
             team_input: Jumbotron::Canonical::TeamInput.new(
               provider_identities: participant_input.provider_identities,
               name: participant_input.team_name,
@@ -20,12 +22,20 @@ module Jumbotron
             observed_at: observed_at,
             change_set: change_set
           )
-          unless team_result.success?
+          unless team
+            unless team_result.success?
+              context.fail!(application_error: team_result.errors.first)
+              return
+            end
+
+            team = team_result.data[:team]
+          end
+
+          if team.nil?
             context.fail!(application_error: team_result.errors.first)
             return
           end
 
-          team = team_result.data[:team]
           participant = game.game_participants.lock.find_by(team_id: team.id)
           context.game_participant = resolve_participant(participant, team)
         rescue ActiveRecord::RecordInvalid => e
@@ -37,6 +47,16 @@ module Jumbotron
         end
 
         private
+
+        def existing_team
+          ref = participant_input.provider_identities.first
+          identity = Jumbotron::ProviderIdentity.find_by(
+            provider: ref.provider,
+            object_namespace: ref.namespace,
+            provider_id: ref.id
+          )
+          identity&.target if identity&.target.is_a?(Jumbotron::Team)
+        end
 
         def resolve_participant(participant, team)
           if participant

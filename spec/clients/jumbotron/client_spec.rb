@@ -114,7 +114,7 @@ RSpec.describe Jumbotron::Client do
     let(:phase) { create(:jumbotron_season_phase, season: season, name: "regular_season") }
 
     context "when the phase has observed week and round groups" do
-      let!(:week2) do
+      let!(:later_week) do
         create(
           :jumbotron_schedule_group,
           season: season,
@@ -124,7 +124,7 @@ RSpec.describe Jumbotron::Client do
           name: "Week 2"
         )
       end
-      let!(:week1) do
+      let!(:earlier_week) do
         create(
           :jumbotron_schedule_group,
           season: season,
@@ -160,7 +160,7 @@ RSpec.describe Jumbotron::Client do
         expect(result).to be_a(Jumbotron::Public::ScheduleGroupEnumeration)
         expect(result.completeness).to eq(:incomplete)
         expect(result.groups.map(&:number)).to eq([1, 2])
-        expect(result.groups.map(&:id)).to eq([week1.id, week2.id])
+        expect(result.groups.map(&:id)).to eq([earlier_week.id, later_week.id])
         expect(result.groups).to all(be_a(Jumbotron::Public::ScheduleGroup))
         expect(result.groups.first).not_to be_a(ActiveRecord::Base)
       end
@@ -369,6 +369,41 @@ RSpec.describe Jumbotron::Client do
     it "returns empty collections for empty game_ids without error" do
       expect(client.current_lines(game_ids: [])).to eq([])
       expect(client.consensus(game_ids: [])).to eq([])
+    end
+  end
+
+  describe "#register_sandbox_projection" do
+    let(:sport) { create(:jumbotron_sport, name: "football") }
+    let(:league) { create(:jumbotron_league, sport: sport, name: "nfl") }
+    let(:season) { create(:jumbotron_season, league: league, name: "2026") }
+    let(:phase) { create(:jumbotron_season_phase, season: season, name: "regular_season") }
+
+    before do
+      phase
+    end
+
+    subject(:result) do
+      client.register_sandbox_projection(
+        name: "apple-review",
+        source: {
+          sport: "football",
+          league: "nfl",
+          season: "2026",
+          season_phase: "regular_season"
+        }
+      )
+    end
+
+    it "returns an immutable public projection directly" do
+      expect(result).to be_a(Jumbotron::Public::SandboxProjection)
+      expect(result.name).to eq("apple-review")
+      expect(result).not_to be_a(ActiveRecord::Base)
+    end
+
+    it "retains stable code and safe details on public errors" do
+      expect do
+        client.register_sandbox_projection(name: "apple-review", source: "nfl")
+      end.to raise_error(Jumbotron::InvalidRequestError) { |error| expect(error.code).to eq("invalid_request") }
     end
   end
 end

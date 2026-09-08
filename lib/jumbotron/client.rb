@@ -2,6 +2,20 @@
 
 module Jumbotron
   class Client
+    def register_sandbox_projection(**)
+      Public::TranslateOutcome.call(
+        Workflows::Sandbox::RegisterProjectionWorkflow.call(**),
+        payload_key: :sandbox_projection
+      )
+    end
+
+    def reset_sandbox_projection(**)
+      Public::TranslateOutcome.call(
+        Workflows::Sandbox::ResetProjectionWorkflow.call(**),
+        payload_key: :sandbox_reset
+      )
+    end
+
     def schedule(**)
       Public::TranslateOutcome.call(
         Workflows::ReadScheduleWorkflow.call(**),

@@ -27,7 +27,9 @@ RSpec.describe "Slice 2.6 boot discovery architecture" do
     expect(ids).to include("jumbotron:espn_nfl:live")
     expect(ids).to include("jumbotron:espn_nfl:upcoming_lines")
     expect(ids).to include("jumbotron:espn_nfl:post_final_record")
-    expect(ids.size).to eq(11)
+    expect(ids.grep(/\Ajumbotron:espn_nfl:/).size).to eq(11)
+    expect(ids.grep(/\Ajumbotron:sandbox_nfl:/).size).to eq(11)
+    expect(ids).not_to include("jumbotron:sandbox_nfl:full_season")
 
     game_update = File.read(root.join("app/jobs/jumbotron/game_update_job.rb"))
     expect(game_update).to include("call_from_job")

@@ -6,6 +6,7 @@ module Jumbotron
       class ExecuteLineAcquisitionScope < CommandTower::Services::ApplicationService
         validate :adapter, required: true
         validate :acquisition, is_a: Hash, required: true
+        validate :observed_at, required: false
 
         def call
           if adapter.provider_cooling_down?
@@ -43,7 +44,7 @@ module Jumbotron
 
           ingest = adapter.translate_line_odds(
             provider_result.output,
-            observed_at: Time.current,
+            observed_at: observed_at || Time.current,
             acquisition: acquisition
           )
           persisted = Canonical::PersistLineObservations.call(ingest: ingest)
