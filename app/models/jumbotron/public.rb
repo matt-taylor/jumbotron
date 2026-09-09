@@ -13,7 +13,8 @@ module Jumbotron
     SandboxScheduleSelector = Data.define(:sport, :league, :season, :season_phase)
     RegisterSandboxProjectionRequest = Data.define(:name, :source)
     ResetSandboxProjectionRequest = Data.define(:sandbox, :start_week, :anchor_day, :now)
-    SandboxProjection = Data.define(:name, :source, :sandbox)
+    SandboxProjectionRequest = Data.define(:name)
+    SandboxProjection = Data.define(:name, :source_label, :source, :sandbox)
     SandboxProjectionReset = Data.define(
       :projection,
       :source_anchor_date,

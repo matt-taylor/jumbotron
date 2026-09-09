@@ -7,7 +7,7 @@ RSpec.describe "Slice 4.2 batched public reads" do
     expect(Jumbotron.client).to be_a(Jumbotron::Client)
     expect(Jumbotron::Client.public_instance_methods(false)).to contain_exactly(
       :schedule, :schedule_groups, :game, :consensus, :current_lines,
-      :register_sandbox_projection, :reset_sandbox_projection
+      :register_sandbox_projection, :reset_sandbox_projection, :sandbox_projection
     )
   end
 

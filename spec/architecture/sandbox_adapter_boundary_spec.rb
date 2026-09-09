@@ -26,6 +26,7 @@ RSpec.describe "Sandbox adapter boundary" do
       :game,
       :consensus,
       :current_lines,
+      :sandbox_projection,
       :register_sandbox_projection,
       :reset_sandbox_projection
     )
