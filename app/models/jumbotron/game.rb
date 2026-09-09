@@ -34,6 +34,17 @@ module Jumbotron
     has_many :teams, through: :game_participants
     has_many :provider_identities, as: :target, inverse_of: :target, dependent: :restrict_with_exception
     has_many :line_observations, inverse_of: :game, dependent: :restrict_with_exception
+    has_one :sandbox_game_plan, inverse_of: :game, dependent: :restrict_with_exception
+    has_many :source_sandbox_game_mappings,
+             class_name: "Jumbotron::SandboxGameMapping",
+             foreign_key: :source_game_id,
+             inverse_of: :source_game,
+             dependent: :restrict_with_exception
+    has_one :sandbox_game_mapping,
+            class_name: "Jumbotron::SandboxGameMapping",
+            foreign_key: :sandbox_game_id,
+            inverse_of: :sandbox_game,
+            dependent: :restrict_with_exception
 
     attribute :lifecycle, :string, default: "scheduled"
     attribute :neutral_site, :boolean, default: false

@@ -13,7 +13,10 @@ RSpec.describe "Jumbotron table prefix" do
       Jumbotron::Venue,
       Jumbotron::Game,
       Jumbotron::GameParticipant,
-      Jumbotron::Bookmaker
+      Jumbotron::Bookmaker,
+      Jumbotron::SandboxGamePlan,
+      Jumbotron::SandboxProjection,
+      Jumbotron::SandboxGameMapping
     ].flat_map(&:column_names)
   end
 
@@ -59,6 +62,18 @@ RSpec.describe "Jumbotron table prefix" do
 
   it "prefixes Bookmaker" do
     expect(Jumbotron::Bookmaker.table_name).to eq("jumbotron_bookmakers")
+  end
+
+  it "prefixes SandboxGamePlan" do
+    expect(Jumbotron::SandboxGamePlan.table_name).to eq("jumbotron_sandbox_game_plans")
+  end
+
+  it "prefixes SandboxProjection" do
+    expect(Jumbotron::SandboxProjection.table_name).to eq("jumbotron_sandbox_projections")
+  end
+
+  it "prefixes SandboxGameMapping" do
+    expect(Jumbotron::SandboxGameMapping.table_name).to eq("jumbotron_sandbox_game_mappings")
   end
 
   it "does not prefix the dummy host ApplicationRecord" do

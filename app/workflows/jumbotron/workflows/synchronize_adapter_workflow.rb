@@ -94,63 +94,15 @@ module Jumbotron
       end
 
       def sync_one_game!(game_input, league, observed_at, change_set)
-        season_result = Services::Canonical::EnsureSeason.call(
-          league: league,
-          year: game_input.season_year
-        )
-        fail_on_service_failure!(season_result)
-
-        phase_result = Services::Canonical::EnsureSeasonPhase.call(
-          season: season_result.data[:season],
-          phase_key: game_input.season_phase_key
-        )
-        fail_on_service_failure!(phase_result)
-
-        group_result = Services::Canonical::EnsureScheduleGroup.call(
-          season: season_result.data[:season],
-          season_phase: phase_result.data[:season_phase],
-          schedule_group_input: game_input.schedule_group
-        )
-        fail_on_service_failure!(group_result)
-
-        venue_result = Services::Canonical::UpsertVenue.call(
-          venue_input: game_input.venue,
-          observed_at: observed_at,
-          change_set: change_set
-        )
-        fail_on_service_failure!(venue_result)
-
-        game_result = Services::Canonical::UpsertGame.call(
+        result = Services::Canonical::UpsertGameGraph.call(
           game_input: game_input,
           league: league,
-          season: season_result.data[:season],
-          season_phase: phase_result.data[:season_phase],
-          schedule_group: group_result.data[:schedule_group],
-          venue: venue_result.data[:venue],
           observed_at: observed_at,
           change_set: change_set
         )
-        fail_on_service_failure!(game_result)
+        fail_on_service_failure!(result)
 
-        game = game_result.data[:game]
-
-        attach = Services::Canonical::AttachProviderIdentities.call(
-          target: game,
-          refs: game_input.provider_identities
-        )
-        fail_on_service_failure!(attach)
-
-        game_input.participants.each do |participant_input|
-          gp_result = Services::Canonical::UpsertGameParticipant.call(
-            game: game,
-            participant_input: participant_input,
-            observed_at: observed_at,
-            change_set: change_set
-          )
-          fail_on_service_failure!(gp_result)
-        end
-
-        game
+        result.data[:game]
       end
 
       def fail_on_service_failure!(service_result)

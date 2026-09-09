@@ -247,4 +247,80 @@ RSpec.describe Jumbotron::Workflows::ExecuteGameUpdatePolicyWorkflow do
     expect(result.meta[:execution][:failed_scopes]).to eq(1)
     expect(result.meta[:execution][:skipped_cooldown]).to eq(1)
   end
+
+  context "with a frozen-clock sandbox live policy" do
+    let(:adapter) { Jumbotron::Adapters::Sandbox::Nfl }
+    let(:league) { create(:jumbotron_league, sport: sport, name: "nfl-sandbox") }
+    let(:season) { create(:jumbotron_season, league: league, name: "2026") }
+    let(:sandbox_game) { build_game(scheduled_at: now - 10.minutes) }
+    let(:home_team) { create(:jumbotron_team, name: "Home Team") }
+    let(:away_team) { create(:jumbotron_team, name: "Away Team") }
+    let(:bookmaker) { create(:jumbotron_bookmaker, name: "Sandbox Sportsbook") }
+
+    before do
+      create(
+        :jumbotron_provider_identity,
+        target: sandbox_game,
+        provider: "sandbox",
+        object_namespace: "event",
+        provider_id: "sandbox-policy-event"
+      )
+      create(
+        :jumbotron_provider_identity,
+        target: home_team,
+        provider: "espn",
+        object_namespace: "team",
+        provider_id: "sandbox-policy-home"
+      )
+      create(
+        :jumbotron_provider_identity,
+        target: away_team,
+        provider: "espn",
+        object_namespace: "team",
+        provider_id: "sandbox-policy-away"
+      )
+      create(:jumbotron_game_participant, game: sandbox_game, team: home_team, role: "home")
+      create(:jumbotron_game_participant, game: sandbox_game, team: away_team, role: "away")
+      create(
+        :jumbotron_line_observation,
+        game: sandbox_game,
+        bookmaker: bookmaker,
+        market: "spread",
+        outcome: "home",
+        line_value: BigDecimal("-3.5"),
+        observed_at: now - 1.day,
+        changed_at: now - 1.day
+      )
+      create(
+        :jumbotron_line_observation,
+        game: sandbox_game,
+        bookmaker: bookmaker,
+        market: "total",
+        outcome: "over",
+        line_value: BigDecimal("44.5"),
+        observed_at: now - 1.day,
+        changed_at: now - 1.day
+      )
+      allow(SecureRandom).to receive(:random_number).and_return(0)
+      result
+    end
+
+    subject(:result) { described_class.call(adapter_id: "sandbox_nfl", policy_id: "live") }
+
+    it "executes one ordinary synchronization scope without waiting" do
+      expect(result.payload).to include(
+        eligible_games: 1,
+        unique_scopes: 1,
+        succeeded_scopes: 1
+      )
+    end
+
+    it "persists the clock-driven observation" do
+      expect(sandbox_game.reload).to have_attributes(
+        lifecycle: "in_progress",
+        progress_state: "active",
+        progress_segment_number: 1
+      )
+    end
+  end
 end

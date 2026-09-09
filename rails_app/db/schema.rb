@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_28_220001) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_08_000002) do
   create_table "jumbotron_bookmakers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "changed_at", null: false
     t.datetime "created_at", null: false
@@ -129,6 +129,49 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_220001) do
     t.datetime "updated_at", null: false
     t.index ["provider", "object_namespace", "provider_id"], name: "idx_jumbotron_pi_identity", unique: true
     t.index ["target_type", "target_id"], name: "idx_jumbotron_pi_target"
+  end
+
+  create_table "jumbotron_sandbox_game_mappings", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.decimal "home_spread", precision: 6, scale: 2, null: false
+    t.string "line_fingerprint", null: false
+    t.bigint "sandbox_game_id", null: false
+    t.bigint "sandbox_projection_id", null: false
+    t.bigint "source_game_id", null: false
+    t.decimal "total", precision: 6, scale: 2, null: false
+    t.datetime "updated_at", null: false
+    t.index ["sandbox_game_id"], name: "index_jumbotron_sandbox_game_mappings_on_sandbox_game_id", unique: true
+    t.index ["sandbox_projection_id", "source_game_id"], name: "idx_jumbotron_sandbox_mapping_source", unique: true
+    t.index ["sandbox_projection_id"], name: "index_jumbotron_sandbox_game_mappings_on_sandbox_projection_id"
+    t.index ["source_game_id"], name: "index_jumbotron_sandbox_game_mappings_on_source_game_id"
+  end
+
+  create_table "jumbotron_sandbox_game_plans", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "away_score", null: false
+    t.datetime "created_at", null: false
+    t.bigint "game_id", null: false
+    t.integer "home_score", null: false
+    t.datetime "selected_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_jumbotron_sandbox_game_plans_on_game_id", unique: true
+  end
+
+  create_table "jumbotron_sandbox_projections", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "adapter_id", null: false
+    t.string "calendar_time_zone", null: false
+    t.datetime "created_at", null: false
+    t.integer "last_date_shift_days"
+    t.datetime "last_reset_at"
+    t.string "last_reset_fingerprint"
+    t.string "name", null: false
+    t.bigint "sandbox_season_id", null: false
+    t.bigint "source_anchor_phase_id", null: false
+    t.bigint "source_season_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_jumbotron_sandbox_projections_on_name", unique: true
+    t.index ["sandbox_season_id"], name: "index_jumbotron_sandbox_projections_on_sandbox_season_id", unique: true
+    t.index ["source_anchor_phase_id"], name: "index_jumbotron_sandbox_projections_on_source_anchor_phase_id"
+    t.index ["source_season_id"], name: "index_jumbotron_sandbox_projections_on_source_season_id"
   end
 
   create_table "jumbotron_schedule_groups", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -351,6 +394,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_220001) do
   add_foreign_key "jumbotron_line_observations", "jumbotron_bookmakers", column: "bookmaker_id"
   add_foreign_key "jumbotron_line_observations", "jumbotron_games", column: "game_id"
   add_foreign_key "jumbotron_line_observations", "jumbotron_observation_batches", column: "observation_batch_id"
+  add_foreign_key "jumbotron_sandbox_game_mappings", "jumbotron_games", column: "sandbox_game_id"
+  add_foreign_key "jumbotron_sandbox_game_mappings", "jumbotron_games", column: "source_game_id"
+  add_foreign_key "jumbotron_sandbox_game_mappings", "jumbotron_sandbox_projections", column: "sandbox_projection_id"
+  add_foreign_key "jumbotron_sandbox_game_plans", "jumbotron_games", column: "game_id"
+  add_foreign_key "jumbotron_sandbox_projections", "jumbotron_season_phases", column: "source_anchor_phase_id"
+  add_foreign_key "jumbotron_sandbox_projections", "jumbotron_seasons", column: "sandbox_season_id"
+  add_foreign_key "jumbotron_sandbox_projections", "jumbotron_seasons", column: "source_season_id"
   add_foreign_key "jumbotron_schedule_groups", "jumbotron_season_phases", column: "season_phase_id"
   add_foreign_key "jumbotron_schedule_groups", "jumbotron_seasons", column: "season_id"
   add_foreign_key "jumbotron_season_phases", "jumbotron_seasons", column: "season_id"

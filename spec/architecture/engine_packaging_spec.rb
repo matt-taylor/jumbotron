@@ -28,6 +28,13 @@ RSpec.describe "Jumbotron engine packaging" do
     expect(command_tower_dep).not_to be_nil
   end
 
+  it "temporarily rejects json 3 until Rails splat-decodes" do
+    json_dep = spec.dependencies.find { |dependency| dependency.name == "json" }
+    expect(json_dep).not_to be_nil
+    expect(json_dep.requirement).to be_satisfied_by(Gem::Version.new("2.21.2"))
+    expect(json_dep.requirement).not_to be_satisfied_by(Gem::Version.new("3.0.0"))
+  end
+
   it "does not declare a pick_em dependency" do
     expect(pick_em_dep).to be_nil
   end
@@ -53,6 +60,18 @@ RSpec.describe "Jumbotron engine packaging" do
   it "packages the game-graph migration" do
     expect(spec.files).to include(
       a_string_matching(%r{\Adb/migrate/\d+_create_jumbotron_game_graph\.rb\z})
+    )
+  end
+
+  it "packages the sandbox game-plan migration" do
+    expect(spec.files).to include(
+      a_string_matching(%r{\Adb/migrate/\d+_create_jumbotron_sandbox_game_plans\.rb\z})
+    )
+  end
+
+  it "packages the sandbox projection migration" do
+    expect(spec.files).to include(
+      a_string_matching(%r{\Adb/migrate/\d+_create_jumbotron_sandbox_projections\.rb\z})
     )
   end
 

@@ -17,9 +17,10 @@ RSpec.describe "Slice 4.1 public client workflow boundary" do
     expect(Jumbotron.client).to be_a(Jumbotron::Client)
   end
 
-  it "exposes only the accepted V1 public methods" do
+  it "exposes only accepted public methods" do
     expect(Jumbotron::Client.public_instance_methods(false)).to contain_exactly(
-      :schedule, :schedule_groups, :game, :consensus, :current_lines
+      :schedule, :schedule_groups, :game, :consensus, :current_lines,
+      :register_sandbox_projection, :reset_sandbox_projection
     )
   end
 
