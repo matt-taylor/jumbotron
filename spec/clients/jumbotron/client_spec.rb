@@ -406,4 +406,25 @@ RSpec.describe Jumbotron::Client do
       end.to raise_error(Jumbotron::InvalidRequestError) { |error| expect(error.code).to eq("invalid_request") }
     end
   end
+
+  describe "#sandbox_projection" do
+    let(:projection) { create(:jumbotron_sandbox_projection, name: "apple-review") }
+
+    before { projection }
+
+    subject(:result) { client.sandbox_projection(name: "apple-review") }
+
+    it "returns an immutable named projection read" do
+      expect(result).to be_a(Jumbotron::Public::SandboxProjection)
+      expect(result.name).to eq("apple-review")
+      expect(result.source_label).to be_present
+      expect(result).not_to be_a(ActiveRecord::Base)
+    end
+
+    context "when missing" do
+      subject(:call) { client.sandbox_projection(name: "missing") }
+
+      it { expect { call }.to raise_error(Jumbotron::NotFoundError) }
+    end
+  end
 end

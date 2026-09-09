@@ -30,9 +30,18 @@ module Jumbotron
         def projection_identity
           Jumbotron::Public::SandboxProjection.new(
             name: projection.name,
+            source_label: source_label,
             source: selector(projection.source_season, projection.source_anchor_phase.name),
             sandbox: selector(projection.sandbox_season, projection.source_anchor_phase.name)
           )
+        end
+
+        def source_label
+          [
+            projection.source_season.league.name.upcase,
+            projection.source_season.name,
+            projection.source_anchor_phase.name.titleize
+          ].join(" ")
         end
 
         def selector(season, phase_name)
