@@ -23,4 +23,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "command_tower", ">= 0.12"
   spec.add_dependency "rails", ">= 7.0", "< 9.0"
+  # Temporary: Rails 8.1.3.1 forwards a positional Hash to JSON.parse. Undo when hosts
+  # run a Rails release that splat-decodes (see docs/upgrades/0.2.0.md).
+  spec.add_dependency "json", "< 3"
 end

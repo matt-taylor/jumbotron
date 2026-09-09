@@ -28,6 +28,13 @@ RSpec.describe "Jumbotron engine packaging" do
     expect(command_tower_dep).not_to be_nil
   end
 
+  it "temporarily rejects json 3 until Rails splat-decodes" do
+    json_dep = spec.dependencies.find { |dependency| dependency.name == "json" }
+    expect(json_dep).not_to be_nil
+    expect(json_dep.requirement).to be_satisfied_by(Gem::Version.new("2.21.2"))
+    expect(json_dep.requirement).not_to be_satisfied_by(Gem::Version.new("3.0.0"))
+  end
+
   it "does not declare a pick_em dependency" do
     expect(pick_em_dep).to be_nil
   end
