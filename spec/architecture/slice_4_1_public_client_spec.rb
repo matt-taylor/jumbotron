@@ -8,6 +8,7 @@ RSpec.describe "Slice 4.1 public client workflow boundary" do
       read_schedule_workflow.rb
       read_schedule_groups_workflow.rb
       read_game_workflow.rb
+      read_games_workflow.rb
       read_consensus_workflow.rb
       read_current_lines_workflow.rb
     ].map { |name| File.read(root.join("app/workflows/jumbotron/workflows", name)) }
@@ -19,7 +20,7 @@ RSpec.describe "Slice 4.1 public client workflow boundary" do
 
   it "exposes only accepted public methods" do
     expect(Jumbotron::Client.public_instance_methods(false)).to contain_exactly(
-      :schedule, :schedule_groups, :game, :consensus, :current_lines,
+      :schedule, :schedule_groups, :game, :games, :consensus, :current_lines,
       :sandbox_projection, :register_sandbox_projection, :reset_sandbox_projection
     )
   end
@@ -36,6 +37,7 @@ RSpec.describe "Slice 4.1 public client workflow boundary" do
     expect(defined?(Jumbotron::Workflows::ReadScheduleWorkflow)).not_to be_nil
     expect(defined?(Jumbotron::Workflows::ReadScheduleGroupsWorkflow)).not_to be_nil
     expect(defined?(Jumbotron::Workflows::ReadGameWorkflow)).not_to be_nil
+    expect(defined?(Jumbotron::Workflows::ReadGamesWorkflow)).not_to be_nil
     expect(defined?(Jumbotron::Workflows::ReadConsensusWorkflow)).not_to be_nil
     expect(defined?(Jumbotron::Workflows::ReadCurrentLinesWorkflow)).not_to be_nil
     workflow_sources.each do |source|

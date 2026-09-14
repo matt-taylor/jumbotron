@@ -44,6 +44,13 @@ module Jumbotron
       )
     end
 
+    def games(**)
+      Public::TranslateOutcome.call(
+        Workflows::ReadGamesWorkflow.call(**),
+        payload_key: :games
+      )
+    end
+
     def consensus(**)
       Public::TranslateOutcome.call(
         Workflows::ReadConsensusWorkflow.call(**),

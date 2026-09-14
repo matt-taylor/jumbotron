@@ -10,8 +10,9 @@ module Jumbotron
 
         def materialize(schedules, **)
           klass = job_class
-          remove_stale(klass, schedules)
-          upsert_desired(klass, schedules)
+          applicable = sidekiq_expressible(schedules)
+          remove_stale(klass, applicable)
+          upsert_desired(klass, applicable)
         end
 
         def cron_string(cadence)
@@ -19,6 +20,15 @@ module Jumbotron
         end
 
         private
+
+        # Five-field cron cannot express sub-minute cadences (Solid Queue / fugit can).
+        def sidekiq_expressible(schedules)
+          schedules.reject { |definition| second_unit?(definition.cadence.unit) }
+        end
+
+        def second_unit?(unit)
+          Clock.canonical_unit(unit) == :second
+        end
 
         def remove_stale(klass, schedules)
           desired_ids = schedules.map(&:id)

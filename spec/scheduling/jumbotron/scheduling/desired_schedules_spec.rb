@@ -42,7 +42,7 @@ RSpec.describe Jumbotron::Scheduling::DesiredSchedules do
 
     it "uses the adapter cadence rather than a central NFL table" do
       expect(live.cadence).to eq(Jumbotron::Adapters::Sandbox::Nfl.policy(:live).cadence)
-      expect(live.cadence.interval_seconds).to eq(60)
+      expect(live.cadence.interval_seconds).to eq(30)
     end
   end
 

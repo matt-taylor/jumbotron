@@ -22,7 +22,7 @@ RSpec.describe Jumbotron::Adapters::Sandbox::Nfl do
     expect(adapter.discovery_ids).to be_empty
     expect(adapter.policy(:live).type).to eq(:live_game_update)
     expect(adapter.policy(:upcoming_lines).type).to eq(:future_line_update)
-    expect(adapter.policy(:live).cadence.interval_seconds).to eq(60)
+    expect(adapter.policy(:live).cadence.interval_seconds).to eq(30)
   end
 
   it "uses the in-process sandbox scoreboard operation" do

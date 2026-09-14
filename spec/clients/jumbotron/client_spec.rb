@@ -322,6 +322,70 @@ RSpec.describe Jumbotron::Client do
     end
   end
 
+  describe "#games" do
+    it "returns public Games in request order after uniq" do
+      first = build_game_graph
+      second = create(
+        :jumbotron_game,
+        league: first.league,
+        season: first.season,
+        season_phase: first.season_phase,
+        schedule_group: first.schedule_group,
+        venue: first.venue,
+        scheduled_at: Time.utc(2026, 10, 12, 17, 0, 0),
+        lifecycle: "scheduled"
+      )
+      home = create(:jumbotron_team, name: "Second Home")
+      away = create(:jumbotron_team, name: "Second Away")
+      create(:jumbotron_game_participant, game: second, team: home, role: "home", score: 0)
+      create(:jumbotron_game_participant, game: second, team: away, role: "away", score: 0)
+
+      result = client.games(game_ids: [second.id, first.id, first.id])
+
+      expect(result).to all(be_a(Jumbotron::Public::Game))
+      expect(result.map(&:id)).to eq([second.id, first.id])
+      expect(result.first.current_lines).to eq([])
+      expect(result.first.consensus_lines).to eq([])
+    end
+
+    it "omits unknown game ids without error" do
+      game = build_game_graph
+      result = client.games(game_ids: [game.id, 9_999_999])
+      expect(result.map(&:id)).to eq([game.id])
+    end
+
+    it "returns an empty array for empty game_ids" do
+      expect(client.games(game_ids: [])).to eq([])
+    end
+
+    it "raises InvalidRequestError when game_ids exceeds the bound" do
+      expect do
+        client.games(game_ids: (1..65).to_a)
+      end.to raise_error(Jumbotron::InvalidRequestError)
+    end
+
+    it "composes consensus when include asks for it" do
+      game = build_game_graph
+      book = create(:jumbotron_bookmaker, name: "DraftKings")
+      observed_at = Time.utc(2026, 8, 13, 12, 0, 0)
+      create(
+        :jumbotron_line_observation,
+        game: game,
+        bookmaker: book,
+        market: "spread",
+        outcome: "home",
+        source: "observed",
+        line_value: BigDecimal("-3.5"),
+        observed_at: observed_at,
+        changed_at: observed_at
+      )
+
+      result = client.games(game_ids: [game.id], include: [:consensus])
+      expect(result.first.consensus_lines.size).to eq(1)
+      expect(result.first.current_lines).to eq([])
+    end
+  end
+
   describe "#current_lines and #consensus" do
     it "returns public line collections for canonical game ids" do
       game = build_game_graph

@@ -101,6 +101,10 @@ module Jumbotron
     )
     GameRequest = Data.define(:id, :includes)
     GameIdsRequest = Data.define(:game_ids)
+    # Bulk Game read — game_ids + optional includes (parity with #game / #schedule).
+    # Distinct from GameIdsRequest so consensus/current_lines stay include-free.
+    GamesRequest = Data.define(:game_ids, :includes)
+    MAX_GAMES_IDS = 64
     ScheduleRequest = Data.define(
       :league_id,
       :sport,
