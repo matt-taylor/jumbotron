@@ -24,6 +24,7 @@ RSpec.describe "Sandbox adapter boundary" do
       :schedule,
       :schedule_groups,
       :game,
+      :games,
       :consensus,
       :current_lines,
       :sandbox_projection,

@@ -48,7 +48,7 @@ module Jumbotron
 
         policy :live,
                type: :live_game_update,
-               cadence: Cadence.new(every: 1, unit: :minute),
+               cadence: Cadence.new(every: 30, unit: :second),
                eligible: lambda { |game, now:|
                  return false if TERMINAL_LIFECYCLES.include?(game.lifecycle)
                  return false if INTERRUPTED_LIFECYCLES.include?(game.lifecycle)

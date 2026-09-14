@@ -15,6 +15,8 @@ RSpec.describe Jumbotron::Scheduling::Backends::SolidQueue do
   it "translates cadence units without NFL policy ids" do
     cadence = Jumbotron::Adapters::Cadence.new(every: 5, unit: :minute)
     expect(backend.schedule_string(cadence)).to eq("every 5 minutes")
+    expect(backend.schedule_string(Jumbotron::Adapters::Cadence.new(every: 30, unit: :second)))
+      .to eq("every 30 seconds")
     expect(backend.schedule_string(Jumbotron::Adapters::Cadence.new(every: 1, unit: :hour)))
       .to eq("every hour at minute 17")
     expect(backend.schedule_string(Jumbotron::Adapters::Cadence.new(every: 1, unit: :day)))
@@ -64,7 +66,7 @@ RSpec.describe Jumbotron::Scheduling::Backends::SolidQueue do
         expect(test_section[key]["class"]).to eq("Jumbotron::LineUpdateJob")
         expect(test_section[key]["args"]).to eq([{ "adapter_id" => "espn_nfl", "policy_id" => policy_id }])
       end
-      expect(test_section["jumbotron:espn_nfl:live"]["schedule"]).to eq("every minute")
+      expect(test_section["jumbotron:espn_nfl:live"]["schedule"]).to eq("every 30 seconds")
 
       first = path.read
       backend.materialize(schedules, path: path)

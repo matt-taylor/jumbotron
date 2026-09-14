@@ -41,7 +41,7 @@ RSpec.describe Jumbotron::Adapters::Espn::Nfl, "synchronization policies" do
       expect(adapter.policy(:far_future).cadence.interval_seconds).to eq(604_800)
       expect(adapter.policy(:near_future).cadence.interval_seconds).to eq(86_400)
       expect(adapter.policy(:upcoming).cadence.interval_seconds).to eq(3600)
-      expect(adapter.policy(:live).cadence.interval_seconds).to eq(60)
+      expect(adapter.policy(:live).cadence.interval_seconds).to eq(30)
       expect(adapter.policy(:interrupted).cadence.interval_seconds).to eq(3600)
       expect(adapter.policy(:post_final_record).cadence.interval_seconds).to eq(900)
       expect(adapter.policy(:far_future_lines).cadence.interval_seconds).to eq(604_800)

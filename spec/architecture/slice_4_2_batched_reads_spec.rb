@@ -6,7 +6,7 @@ RSpec.describe "Slice 4.2 batched public reads" do
   it "retains batched reads beside the accepted sandbox control plane" do
     expect(Jumbotron.client).to be_a(Jumbotron::Client)
     expect(Jumbotron::Client.public_instance_methods(false)).to contain_exactly(
-      :schedule, :schedule_groups, :game, :consensus, :current_lines,
+      :schedule, :schedule_groups, :game, :games, :consensus, :current_lines,
       :register_sandbox_projection, :reset_sandbox_projection, :sandbox_projection
     )
   end
@@ -16,6 +16,7 @@ RSpec.describe "Slice 4.2 batched public reads" do
       read_schedule_workflow.rb
       read_schedule_groups_workflow.rb
       read_game_workflow.rb
+      read_games_workflow.rb
       read_consensus_workflow.rb
       read_current_lines_workflow.rb
     ].each do |name|

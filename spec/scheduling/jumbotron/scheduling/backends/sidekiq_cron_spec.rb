@@ -33,16 +33,17 @@ RSpec.describe Jumbotron::Scheduling::Backends::SidekiqCron do
       "jumbotron:espn_nfl:far_future",
       "jumbotron:espn_nfl:near_future",
       "jumbotron:espn_nfl:upcoming",
-      "jumbotron:espn_nfl:live",
       "jumbotron:espn_nfl:interrupted",
       "jumbotron:espn_nfl:far_future_lines",
       "jumbotron:espn_nfl:upcoming_lines",
       "jumbotron:espn_nfl:in_progress_lines"
     )
-    live = job_class.registry.fetch("jumbotron:espn_nfl:live")
-    expect(live.klass).to eq("Jumbotron::GameUpdateJob")
-    expect(live.cron).to eq("*/1 * * * *")
-    expect(live.args).to eq([{ "adapter_id" => "espn_nfl", "policy_id" => "live" }])
+    # Live is sub-minute (every 30 seconds); Sidekiq::Cron cannot express it — Solid Queue owns it.
+    expect(names).not_to include("jumbotron:espn_nfl:live")
+    upcoming = job_class.registry.fetch("jumbotron:espn_nfl:upcoming")
+    expect(upcoming.klass).to eq("Jumbotron::GameUpdateJob")
+    expect(upcoming.cron).to eq("17 * * * *")
+    expect(upcoming.args).to eq([{ "adapter_id" => "espn_nfl", "policy_id" => "upcoming" }])
     lines = job_class.registry.fetch("jumbotron:espn_nfl:in_progress_lines")
     expect(lines.klass).to eq("Jumbotron::LineUpdateJob")
     expect(lines.cron).to eq("17 * * * *")
